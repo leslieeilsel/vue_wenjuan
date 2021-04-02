@@ -1,0 +1,5 @@
+@media screen and (max-width:540px){
+    .el-date-picker,.el-dialog, .el-card, .el-tab {
+        width: 95%!important;
+    }
+}
