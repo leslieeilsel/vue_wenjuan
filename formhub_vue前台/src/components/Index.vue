@@ -4,6 +4,23 @@
 -->
 <template>
   <div class="main">
+    <div class="btn">
+      <el-button
+        class="toLogin"
+        type="primary"
+        plain
+        style="font-size: 15px;"
+        @click="toLogin"
+        >登录</el-button
+      >
+      <el-button
+        class="toRegiste"
+        plain
+        style="font-size: 15px;"
+        @click="toRegiste"
+        >注册</el-button
+      >
+    </div>
     <el-carousel :height="autoPageHeight">
       <el-carousel-item v-for="item in 3" :key="item">
         <img
@@ -34,7 +51,7 @@
   </div>
 </template>
 <script>
-export default {  
+export default {
   data() {
     return {
       fullHeight: document.body.clientWidth,
@@ -44,27 +61,27 @@ export default {
     };
   },
   mounted() {
-    const that = this
-      window.onresize = () => {
-        return (() => {
-          that.fullHeight = document.documentElement.clientHeight
-        })()
-      }
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        that.fullHeight = document.documentElement.clientHeight;
+      })();
+    };
     this.autoPageHeightH();
   },
-  
+
   watch: {
-      fullHeight () {
-        if(!this.timer) {
-          this.autoPageHeightH();
-          this.timer = true
-          let that = this
-          setTimeout(function (){
-            that.timer = false
-          },400)
-        }
+    fullHeight() {
+      if (!this.timer) {
+        this.autoPageHeightH();
+        this.timer = true;
+        let that = this;
+        setTimeout(function() {
+          that.timer = false;
+        }, 400);
       }
-    },
+    }
+  },
 
   methods: {
     autoPageHeightH() {
@@ -74,6 +91,14 @@ export default {
         this.autoPageHeight = this.fullHeight - 60 - this.footerH + "px";
         console.log(this.fullHeight);
       });
+    },
+    // 跳转登录页面方法
+    toLogin() {
+      this.$router.push({ path: "/login" });
+    },
+    // 跳转注册页面方法
+    toRegiste() {
+      this.$router.push({ path: "/register" });
     }
   }
 };
@@ -87,7 +112,7 @@ export default {
   background-color: #fff;
 }
 .bottom {
- height: auto !important;
+  height: auto !important;
   background-color: #2e3e4e;
   color: #9b9ea0;
   position: relative;
@@ -127,9 +152,19 @@ export default {
   color: red;
   font-size: 16px;
 }
-
+.btn {
+  display: none;
+}
+.toLogin,
+.toRegiste {
+  box-sizing: border-box;
+  width: 50%;
+  margin: 0;
+}
 @media screen and (max-width: 540px) {
-  
+  .btn {
+    display: flex;
+  }
   .el-carousel {
     height: auto !important;
   }

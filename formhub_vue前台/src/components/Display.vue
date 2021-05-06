@@ -267,6 +267,7 @@
   }
 </script>
 <style scoped>
+  
   .display{
     text-align: center;
     padding: 20px;
@@ -298,4 +299,5 @@
     color: #909399;
     text-decoration:none;
   }
+  
 </style>

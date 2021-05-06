@@ -27,4 +27,5 @@ export default {
     height: 100vh;
     background-color: #fafafa;
   }
+
 </style>

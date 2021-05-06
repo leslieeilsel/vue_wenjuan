@@ -50,13 +50,11 @@
             >
             </el-input>
           </el-form-item>
-          <!-- <el-form-item label="验证码" prop="captcha">
-              <el-input  @keyup.enter.native="Register('registerForm')" v-model="registerForm.captcha" autocomplete="off" placeholder="请输入验证码" show-password>
+          <el-form-item label="验证码" prop="captcha" class="captchaForm">
+              <el-input class="capthchaInput"  width="50%" v-model="registerForm.captcha" autocomplete="off" placeholder="请输入验证码">
               </el-input>
+              <img src="" ref="capthcha" class="capthchaImg" @click="getCaptcha()">
             </el-form-item>
-             <el-form-item style="margin-left: -25%">
-              <img :src="captchaSrc" ref="capthcha" @click="getCaptcha()">
-            </el-form-item> -->
           <!-- 注册，重置按钮 -->
           <el-form-item style="margin-left: -25%">
             <!-- 登录页面链接 -->
@@ -81,7 +79,7 @@
 </template>
 
 <script>
-import { isRegister, userAdd } from "./api";
+import { isRegister, userAdd, loginStatus } from "./api";
 export default {
   name: "Register",
   data() {
@@ -175,8 +173,27 @@ export default {
       }
     };
   },
+  mounted() {
+    this.logincheck();
+    this.getCaptcha();
+  },
   // 方法定义
   methods: {
+    logincheck(){
+        loginStatus({})
+      .then(data=>{
+ 
+        if(data.code==500){
+          this.$router.push({path:'/register'})
+        }else{
+          this.$cookieStore.setCookie("uid", data.msg)
+
+        //  sessionStorage.setItem("uid", data.msg)
+          this.$router.push({path:'/home'})
+
+        }
+      })
+    },
     //获取验证码
     getCaptcha() {
       this.$refs.capthcha.src = "/api/captcha/id/" + Math.random();
@@ -276,4 +293,16 @@ export default {
   line-height: 20px;
   font-size: 8px;
 }
+.capthchaImg {
+    width: 35%;
+    height: 34px;
+    float: left;
+      border: 1px solid grey;
+  }
+  .capthchaInput{
+  
+    height: 40px;
+    float: left;
+    width: 60%;
+  }
 </style>

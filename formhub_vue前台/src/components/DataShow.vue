@@ -3,7 +3,6 @@
 功能：对问卷调查结果的数据进行分析并用图表可视化展示
 -->
 <template>
-
   <div
     id="pdfDom"
     class="Count"
@@ -12,30 +11,46 @@
     style="width:100%"
   >
     <div v-if="!(detail.length == 0)" class="opera-buttons">
-      <el-button type="primary" size="mini" @click="exportJSON">导出json</el-button>
-      <el-button type="primary" size="mini" @click="simData">{{ isSimData?'正常数据':'模拟数据'}}</el-button>
+      <el-button type="primary" size="mini" @click="exportJSON"
+        >导出json</el-button
+      >
+      <el-button type="primary" size="mini" @click="simData">{{
+        isSimData ? "正常数据" : "模拟数据"
+      }}</el-button>
     </div>
     <div v-if="detail.length == 0">暂时没有数据</div>
-    <el-card class="question" :key="index"  v-for="(item, index) in detail">
+    <el-card class="question" :key="index" v-for="(item, index) in detail">
       <div slot="header" class="clearfix">
         <span style="color: #F56C6C;">
-              <span v-if="item.mustbe=='1'">*</span>
-              <span v-else>&nbsp;</span>
-            </span>
-        <span>{{ index + 1 + "." + item.qtitle }} 
-          
-          
-          <el-tag effect="dark"  type= 'success' v-if="isSimData && item.mustbe!='1'">
-              填报人数: <el-input-number v-model="item.personCount" :min="item.minPC" :max="item.maxPC" label="模拟填报人数"></el-input-number>人
-            </el-tag>
-            <el-tag effect="dark"  type= 'success' v-else>
+          <span v-if="item.mustbe == '1'">*</span>
+          <span v-else>&nbsp;</span>
+        </span>
+        <span
+          >{{ index + 1 + "." + item.qtitle }}
+
+          <el-tag
+            effect="dark"
+            type="success"
+            v-if="isSimData && item.mustbe != '1'"
+          >
+            填报人数:
+            <el-input-number
+              v-model="item.personCount"
+              :min="item.minPC"
+              :max="item.maxPC"
+              label="模拟填报人数"
+            ></el-input-number
+            >人
+          </el-tag>
+          <el-tag effect="dark" type="success" v-else>
             填报人数: {{ item.personCount }}人
           </el-tag>
-           <el-tag effect="dark"  type= 'warning'>
-   {{item.qtype=='1'?'单选':(item.qtype=='2'?'多选':'填空')}}
+          <el-tag effect="dark" type="warning">
+            {{
+              item.qtype == "1" ? "单选" : item.qtype == "2" ? "多选" : "填空"
+            }}
           </el-tag>
-          
-          </span>
+        </span>
       </div>
       <!--如果数据库中的问题类型为单项选择或者多项选择-->
       <!--则将数据库中的数据以表格、柱状图、饼状图、圆环图、条形图的方式进行展示-->
@@ -48,60 +63,63 @@
           class="table"
         >
           <el-table-column prop="title" label="选项"></el-table-column>
-          <el-table-column
-            prop="personCount"
-            label="数量"
-            width="180"
-          >
-          <template slot-scope="scope">
-   
-          <el-input-number @change="handleChange(index,scope.$index)" v-if="isSimData" v-model="scope.row.personCount" :min="0" :max="item.maxPC" label="模拟填报人数"></el-input-number>
-          </template>
+          <el-table-column prop="personCount" label="数量" width="180">
+            <template slot-scope="scope">
+              <el-input-number
+                @change="handleChange(index, scope.$index)"
+                v-if="isSimData"
+                v-model="scope.row.personCount"
+                :min="0"
+                :max="item.maxPC"
+                label="模拟填报人数"
+              ></el-input-number>
+            </template>
           </el-table-column>
-          
+
           <el-table-column
             prop="percent"
             label="占比"
             width="180"
           ></el-table-column>
         </el-table>
-        <br />
 
-        <el-button
-          size="mini"
-          type="primary"
-          plain
-          @click.native="changeValue(index, 1)"
-          >柱状图</el-button
-        >
-        <el-button
-          size="mini"
-          type="primary"
-          plain
-          @click.native="changeValue(index, 2)"
-          >饼状图</el-button
-        >
-        <el-button
-          size="mini"
-          type="primary"
-          plain
-          @click.native="changeValue(index, 3)"
-          >圆环图</el-button
-        >
-        <el-button
-          size="mini"
-          type="primary"
-          plain
-          @click.native="changeValue(index, 4)"
-          >条形图</el-button
-        >
-        <el-button
-          size="mini"
-          type="primary"
-          plain
-          @click.native="changeValue(index, 0)"
-          >隐藏图表</el-button
-        >
+        <el-table-column class="tableShow">
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.native="changeValue(index, 1)"
+            >柱状图</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.native="changeValue(index, 2)"
+            >饼状图</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.native="changeValue(index, 3)"
+            >圆环图</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.native="changeValue(index, 4)"
+            >条形图</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click.native="changeValue(index, 0)"
+            >隐藏图表</el-button
+          >
+        </el-table-column>
 
         <div :id="'img' + index" class="img" v-show="visible[index] == 1"></div>
         <div
@@ -117,15 +135,16 @@
         <div :id="'tz' + index" class="tz" v-show="visible[index] == 4"></div>
       </div>
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
-      
+
       <div v-if="item.qtype == '3' && item.content">
-       
         <el-tag
-    v-for="jdItem,jdIndex in item.content.split('&$%').slice(0,-1)"
-    :key="jdIndex"
-    effect="dark" style="margin-left:5px">
-    {{ jdItem }}
-  </el-tag>
+          v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)"
+          :key="jdIndex"
+          effect="dark"
+          style="margin-left:5px"
+        >
+          {{ jdItem }}
+        </el-tag>
       </div>
     </el-card>
     <!-- <el-dialog title="详细内容" :visible.sync="dialogTableVisible">
@@ -146,13 +165,13 @@
   </div>
 </template>
 <script>
-import FileSaver from 'file-saver'
+import FileSaver from "file-saver";
 import echarts from "echarts";
-import {getWenjuan} from './api'
+import { getWenjuan } from "./api";
 export default {
   data() {
     return {
-      jsonContent: '',
+      jsonContent: "",
       dialogTableVisible: false,
       visible: [],
       loading: false,
@@ -174,69 +193,71 @@ export default {
     // //console.log('数据分析');
   },
   methods: {
-    handleChange(qid,oid){
-
+    handleChange(qid, oid) {
       let cur = this.detail[qid].options[oid];
 
-     cur.percent = this.getPercent(parseInt(cur.personCount),parseInt(this.detail[qid].maxPC));
-      
+      cur.percent = this.getPercent(
+        parseInt(cur.personCount),
+        parseInt(this.detail[qid].maxPC)
+      );
     },
-    randomNum(minNum,maxNum){ 
-    switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*minNum+1,10); 
-            break; 
-        case 2: 
-            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-        break; 
-            default: 
-                return 0; 
-            break; 
-    } 
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10);
+          break;
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+          break;
+        default:
+          return 0;
+          break;
+      }
     },
     simData() {
       this.isSimData = !this.isSimData;
-      
-      this.detail.forEach(item=>{
-        item.maxPC =  this.wTotalCount;
+
+      this.detail.forEach(item => {
+        item.maxPC = this.wTotalCount;
         item.minPC = 0;
-        if(item.mustbe=='1'){
+        if (item.mustbe == "1") {
           item.minPC = this.wTotalCount;
         }
         let curTotal = item.maxPC;
-        let tmp  = 0;
-        for(let i=0;i<item.options.length;i++){
-            if(i<item.options.length-1){
-                 tmp = this.randomNum(0,curTotal);
-                 console.log(tmp);
-                curTotal -= tmp;
-            }else{
-                tmp = curTotal
-            }
-            item.options[i].personCount = tmp;
-            item.options[i].percent = this.getPercent(parseInt(tmp),parseInt(item.maxPC));
-      
+        let tmp = 0;
+        for (let i = 0; i < item.options.length; i++) {
+          if (i < item.options.length - 1) {
+            tmp = this.randomNum(0, curTotal);
+            console.log(tmp);
+            curTotal -= tmp;
+          } else {
+            tmp = curTotal;
+          }
+          item.options[i].personCount = tmp;
+          item.options[i].percent = this.getPercent(
+            parseInt(tmp),
+            parseInt(item.maxPC)
+          );
         }
 
         item.personCount = this.wTotalCount;
-
-      })
+      });
     },
-    exportJSON () {
+    exportJSON() {
       // 将json转换成字符串
-      const data = JSON.stringify(this.jsonContent)
-      const blob = new Blob([data], {type: ''})
-      FileSaver.saveAs(blob, this.jsonContent.title+'.json')
+      const data = JSON.stringify(this.jsonContent);
+      const blob = new Blob([data], { type: "" });
+      FileSaver.saveAs(blob, this.jsonContent.title + ".json");
     },
 
     getPercent(count, total) {
       //console.log("-------");
-       //console.log(count, total);
+      //console.log(count, total);
       let res = (count / total).toFixed(2);
-     
-      return (isNaN(res)?1:res)*100 + '%'; 
+
+      return (isNaN(res) ? 1 : res) * 100 + "%";
     },
-    
+
     answerText2Excel(questionId) {
       this.answerText2ExcelQeustionId = questionId;
       designOpera({
@@ -247,7 +268,7 @@ export default {
         this.answerText2ExcelQeustionId = 0;
       });
     },
-   
+
     //切换图表
     changeValue(num, value) {
       this.$set(this.visible, num, value);
@@ -268,62 +289,60 @@ export default {
       this.loading = true;
       this.detail = [];
       this.wjId = id;
-      
-      
 
       getWenjuan({
-          id:this.wjId,
-        })
-          .then(data=>{
-          //  data = JSON.parse(data)
-            this.jsonContent = data.msg;
-            this.detail=data.msg.questions;
-            let that = this;
-            this.wTotalCount=parseInt(this.jsonContent.totalPerson);
-            this.detail.map(function(item,index) {
-              item.options.map(function(item2){
-                 item2['percent']= that.getPercent(item2.personCount , item.personCount)
-                 //console.log( item2['percent']);
-                  return item2
-              })
-              
-             return item;
-            });
-      
-            this.visible = [];
+        id: this.wjId
+      }).then(data => {
+        //  data = JSON.parse(data)
+        this.jsonContent = data.msg;
+        this.detail = data.msg.questions;
+        let that = this;
+        this.wTotalCount = parseInt(this.jsonContent.totalPerson);
+        this.detail.map(function(item, index) {
+          item.options.map(function(item2) {
+            item2["percent"] = that.getPercent(
+              item2.personCount,
+              item.personCount
+            );
+            //console.log( item2['percent']);
+            return item2;
+          });
+
+          return item;
+        });
+
+        this.visible = [];
         this.loading = false;
-          })
+      });
       this.dialogShow = false;
     },
     getTitleArr(arr) {
-      
       let res = [];
-      arr.forEach(item=>{
+      arr.forEach(item => {
         res.push(item.title);
-      })
+      });
       return res;
     },
-     getPersonCount(arr) {
-      
+    getPersonCount(arr) {
       let res = [];
-      arr.forEach(item=>{
+      arr.forEach(item => {
         res.push(item.personCount);
-      })
+      });
       return res;
     },
-   resizeMyChartContainer(f_canvas) {
-       if(window.innerWidth<=540) {
-          f_canvas.style.height = window.innerHeight * 0.65 + 'px';
-        f_canvas.style.width = window.innerWidth * 0.75 + 'px';
-        
-       }
-       return f_canvas
-       
-      },
+    resizeMyChartContainer(f_canvas) {
+      if (window.innerWidth <= 540) {
+        f_canvas.style.height = window.innerHeight * 0.65 + "px";
+        f_canvas.style.width = window.innerWidth * 0.75 + "px";
+      }
+      return f_canvas;
+    },
     //柱状图
     setImg(id) {
-     //console.log(this.detail[id])
-      let myChart = echarts.init(this.resizeMyChartContainer(document.getElementById("img" + id)));
+      //console.log(this.detail[id])
+      let myChart = echarts.init(
+        this.resizeMyChartContainer(document.getElementById("img" + id))
+      );
       var option = {
         tooltip: {},
         legend: {
@@ -338,8 +357,7 @@ export default {
           data: this.getTitleArr(this.detail[id].options)
         },
         yAxis: {
-          type: 'value',
-          
+          type: "value"
         },
         series: [
           {
@@ -354,32 +372,34 @@ export default {
       myChart.setOption(option);
     },
     getParOptionData(arr) {
-      let res = []
-      arr.forEach(item=>{
+      let res = [];
+      arr.forEach(item => {
         //console.log(item);
-        res.push(item.title)
-      })
-      return res
+        res.push(item.title);
+      });
+      return res;
     },
     getParSeriesData(arr) {
-      let res = []
-      arr.forEach(item=>{
-        res.push({value:item.personCount ,name:item.title})
-      })
-      return res
+      let res = [];
+      arr.forEach(item => {
+        res.push({ value: item.personCount, name: item.title });
+      });
+      return res;
     },
     // 饼状图
     setPar(id) {
-      let myChart = echarts.init(this.resizeMyChartContainer(document.getElementById("bing" + id)));
+      let myChart = echarts.init(
+        this.resizeMyChartContainer(document.getElementById("bing" + id))
+      );
       var option = {
         tooltip: {},
 
         color: ["#409EFF", "#FFB54D", "#FF7466", "#44DB5E"],
         legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: this.getParOptionData(this.detail[id].options)
-    },
+          orient: "vertical",
+          left: "left",
+          data: this.getParOptionData(this.detail[id].options)
+        },
         series: [
           {
             name: "统计结果：",
@@ -402,16 +422,18 @@ export default {
     // 圆环图
     setRing(id) {
       ////console.log(id);
-      let myChart = echarts.init(this.resizeMyChartContainer(document.getElementById("ring" + id)));
+      let myChart = echarts.init(
+        this.resizeMyChartContainer(document.getElementById("ring" + id))
+      );
       var option = {
         tooltip: {},
 
         color: ["#409EFF", "#FFB54D", "#FF7466", "#44DB5E"],
         legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: this.getParOptionData(this.detail[id].options)
-    },
+          orient: "vertical",
+          left: "left",
+          data: this.getParOptionData(this.detail[id].options)
+        },
         series: [
           {
             name: "数量：",
@@ -445,40 +467,42 @@ export default {
     //圆环图
     setTz(id) {
       ////console.log(id);
-      let myChart = echarts.init(this.resizeMyChartContainer(document.getElementById("tz" + id)));
+      let myChart = echarts.init(
+        this.resizeMyChartContainer(document.getElementById("tz" + id))
+      );
       var option = {
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
-    },
-    color: ["#409EFF", "#FFB54D", "#FF7466", "#44DB5E"],
-    legend: {
-        data: ['填报']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
-    },
-    yAxis: {
-        type: 'category',
-        data: this.getTitleArr(this.detail[id].options)
-    },
-    series: [
-        {
-            name: '填报',
-            type: 'bar',
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow"
+          }
+        },
+        color: ["#409EFF", "#FFB54D", "#FF7466", "#44DB5E"],
+        legend: {
+          data: ["填报"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "value",
+          boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+          type: "category",
+          data: this.getTitleArr(this.detail[id].options)
+        },
+        series: [
+          {
+            name: "填报",
+            type: "bar",
             data: this.getPersonCount(this.detail[id].options)
-        }
-    ]
-};
+          }
+        ]
+      };
 
       myChart.setOption(option);
     },
@@ -493,6 +517,7 @@ export default {
 </script>
 <style scoped>
 .Count {
+  height: 100vh;
 }
 .Count .question {
   max-width: 800px;
@@ -501,7 +526,13 @@ export default {
   margin: 5px;
   text-align: left;
 }
-.Count .table {
+.tableShow {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.tableShow .el-button {
+  margin-top: 10px;
 }
 .Count .img {
   width: 500px;
@@ -521,5 +552,7 @@ export default {
 }
 .opera-buttons {
   padding: 10px;
+}
+.tableShow {
 }
 </style>

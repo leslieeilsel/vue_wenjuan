@@ -6,21 +6,22 @@ use Exception;
 final class Frame
 {
     public static function run()
-    {	
-	#echo "frame";
+    {
+        #echo "frame";
         //初始化默认参数
         self::initConfig();
+        
         //初始化默认路由
         self::initRoute();
         //初始化默认常量
         self::initConst();
         //初始化自动加载
-	
+
         self::initAutoLoad();
         //初始化自动分发
         #echo 'patch';
-	self::initDispatch();
-	
+        self::initDispatch();
+
     }
     private static function initConfig()
     {
@@ -45,8 +46,8 @@ final class Frame
         define('ID', $id);
         define('CONTROLLER', $c);
         define('ACTION', $a);
-		define('METHOD', $_SERVER['REQUEST_METHOD']);
-		define('HEADER', getallheaders());
+        define('METHOD', $_SERVER['REQUEST_METHOD']);
+        define('HEADER', getallheaders());
     }
     private static function initConst()
     {
@@ -57,11 +58,11 @@ final class Frame
     {
         spl_autoload_register(function ($className) {
             //必须加载绝对路径
-            
+
             $fileName = ROOT_PATH . str_replace('\\', DS, ($className)) . '.class.php';
             // echo "==";
-            // echo $fileName;    
-          
+            // echo $fileName;
+
             if (file_exists($fileName)) {
                 require_once ($fileName);
                 #echo '有';
@@ -70,22 +71,22 @@ final class Frame
     }
     private static function initDispatch()
     {
-        
-        try{
+
+        try {
             $ControllerName = '\\' . 'Controller' . '\\' . ucfirst(CONTROLLER) . 'Controller';
-           #echo "控制器"; 
-	   #echo $ControllerName;
-	    $a = ACTION;
-        	##echo $a;    
-	$ControllerObj = $ControllerName::getInstance();
-	
+            #echo "控制器";
+            
+            $a = ACTION;
+            ##echo $a;
+            $ControllerObj = $ControllerName::getInstance();
+           
             $ControllerObj->$a();
-        }catch(Exception $e) { // 错误页面处理
+        } catch (Exception $e) { // 错误页面处理
             $ControllerName = '\\' . 'Controller' . '\\' . 'notFound' . 'Controller';
             $a = ACTION;
             $ControllerObj = $ControllerName::getInstance();
             $ControllerObj->$a();
         }
-        
+
     }
 }

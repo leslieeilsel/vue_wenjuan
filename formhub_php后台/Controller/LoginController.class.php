@@ -11,7 +11,7 @@ final class LoginController extends BaseController
     public $p; // 用户密码
     public function index()
     {
-	
+        
         $this->v = HEADER['Verify'];
         $this->u = HEADER['Username'];
         $this->p = HEADER['Password'];

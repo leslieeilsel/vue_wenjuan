@@ -49,9 +49,6 @@
         </el-input>
 
       </el-card>
-      
-    
-
       <el-button  icon="el-icon-circle-plus" @click="addQuestion" style="margin-top: 10px;">添加题目</el-button>
 
 <br><br><br><br><br>

@@ -20,13 +20,12 @@
                 </el-input>
             </el-form-item>
             
-            <!-- <el-form-item prop="captcha">
-              <el-input  v-model="loginForm.captcha" autocomplete="off" placeholder="请输入验证码">
+            <el-form-item prop="captcha" class="captchaForm">
+              <el-input class="capthchaInput"  width="50%" v-model="loginForm.captcha" autocomplete="off" placeholder="请输入验证码">
               </el-input>
+              <img src="" ref="capthcha" class="capthchaImg" @click="getCaptcha()">
             </el-form-item>
-             <el-form-item>
-              <img src="" ref="capthcha" @click="getCaptcha()">
-            </el-form-item> -->
+             
 
             <!-- 登录按钮 -->
             <el-form-item>
@@ -74,7 +73,7 @@ export default {
 //页面初始化
   mounted() {
     this.logincheck();
-    // this.getCaptcha();
+    this.getCaptcha();
   },
 //方法定义
   methods: {
@@ -192,5 +191,18 @@ export default {
     margin-left: 8px;
     line-height: 20px;
     font-size: 8px;
+  }
+  
+  .capthchaImg {
+    width: 48%;
+    height: 38px;
+    float: left;
+      border: 1px solid grey;
+  }
+  .capthchaInput{
+  
+    height: 40px;
+    float: left;
+    width: 48%;
   }
 </style>
