@@ -49,6 +49,10 @@
         username:''  //用户名
       }
     },
+    mounted(){
+      this.state();
+      console.log(123);
+    },
     methods:{
       toIndex(){
         this.$router.push({path:'/index'});
@@ -67,15 +71,16 @@
       },
       //判断session中是否存在数据，存在将showname置为true，否则false
       state(){
-        //console.log('state')
-        //console.log(sessionStorage.getItem('username'))
-        if(sessionStorage.getItem('username')!=null){
+        let curUid = this.$cookieStore.getCookie("username");
+             
+        if(curUid){
           this.showname=true;
-          this.username = sessionStorage.getItem('username')
+          this.username = curUid
         }
         else {
           this.showname = false
         }
+  
       },
       //下拉菜单操作
       handleCommand(command){
@@ -89,6 +94,8 @@
       //登出
       exit(command){
         sessionStorage.clear()  //登出成功，清空session
+        this.$cookieStore.delCookie( 'username' );//删除cookie
+        this.$cookieStore.delCookie( 'uid' );//删除cookie
         this.$cookieStore.delCookie( 'PHPSESSID' );//删除cookie
         this.state()  // 调用state方法
         this.toLogin()  // 调用toLogin方法
@@ -97,6 +104,7 @@
   }
 </script>
 <style scoped>
+
   .main{
     position: absolute;
     width: 100%;
@@ -135,10 +143,8 @@
     font-size: 14px;
     margin-bottom: 20px;
   }
+  
   @media screen and (max-width:540px){
-    .el-header{
-      height: auto!important;
-    }
     .headerLogin {
       margin-right: 0!important;
       float:none!important;
@@ -149,4 +155,5 @@
       left: 0;
     }
   }
+  
 </style>

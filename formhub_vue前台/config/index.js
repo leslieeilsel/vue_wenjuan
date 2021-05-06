@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: "/",
     proxyTable: {
       "/api": {
-        target: "http://localhost:8004",
+        target: "http://fb.xcylw.top:8004",
         changeOrigin: true,
         pathRewrite: {
 

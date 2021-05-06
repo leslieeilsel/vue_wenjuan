@@ -3,6 +3,7 @@
 功能：对问卷调查结果的数据进行分析并用图表可视化展示
 -->
 <template>
+
   <div
     id="pdfDom"
     class="Count"
@@ -12,21 +13,24 @@
   >
     <div v-if="!(detail.length == 0)" class="opera-buttons">
       <el-button type="primary" size="mini" @click="exportJSON">导出json</el-button>
-      <!-- <download-excel class = "export-excel-wrapper" :data = "detail" name = "filename.xls">
-          
-      </download-excel> -->
-      <!-- <el-button type="success" size="mini" @click.native="exportPdf"
-        >导出PDF</el-button
-      > -->
+      <el-button type="primary" size="mini" @click="simData">{{ isSimData?'正常数据':'模拟数据'}}</el-button>
     </div>
     <div v-if="detail.length == 0">暂时没有数据</div>
     <el-card class="question" :key="index"  v-for="(item, index) in detail">
       <div slot="header" class="clearfix">
+        <span style="color: #F56C6C;">
+              <span v-if="item.mustbe=='1'">*</span>
+              <span v-else>&nbsp;</span>
+            </span>
         <span>{{ index + 1 + "." + item.qtitle }} 
-          <el-tag effect="dark"  type= 'success'>
+          
+          
+          <el-tag effect="dark"  type= 'success' v-if="isSimData && item.mustbe!='1'">
+              填报人数: <el-input-number v-model="item.personCount" :min="item.minPC" :max="item.maxPC" label="模拟填报人数"></el-input-number>人
+            </el-tag>
+            <el-tag effect="dark"  type= 'success' v-else>
             填报人数: {{ item.personCount }}人
           </el-tag>
-        
            <el-tag effect="dark"  type= 'warning'>
    {{item.qtype=='1'?'单选':(item.qtype=='2'?'多选':'填空')}}
           </el-tag>
@@ -48,7 +52,12 @@
             prop="personCount"
             label="数量"
             width="180"
-          ></el-table-column>
+          >
+          <template slot-scope="scope">
+   
+          <el-input-number @change="handleChange(index,scope.$index)" v-if="isSimData" v-model="scope.row.personCount" :min="0" :max="item.maxPC" label="模拟填报人数"></el-input-number>
+          </template>
+          </el-table-column>
           
           <el-table-column
             prop="percent"
@@ -155,7 +164,9 @@ export default {
       questionId: 0,
       wjId: 0,
       exportExcelLoading: false,
-      answerText2ExcelQeustionId: 0
+      answerText2ExcelQeustionId: 0,
+      isSimData: false,
+      wTotalCount: 0
     };
   },
   mounted() {
@@ -163,6 +174,54 @@ export default {
     // //console.log('数据分析');
   },
   methods: {
+    handleChange(qid,oid){
+
+      let cur = this.detail[qid].options[oid];
+
+     cur.percent = this.getPercent(parseInt(cur.personCount),parseInt(this.detail[qid].maxPC));
+      
+    },
+    randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+            break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+        break; 
+            default: 
+                return 0; 
+            break; 
+    } 
+    },
+    simData() {
+      this.isSimData = !this.isSimData;
+      
+      this.detail.forEach(item=>{
+        item.maxPC =  this.wTotalCount;
+        item.minPC = 0;
+        if(item.mustbe=='1'){
+          item.minPC = this.wTotalCount;
+        }
+        let curTotal = item.maxPC;
+        let tmp  = 0;
+        for(let i=0;i<item.options.length;i++){
+            if(i<item.options.length-1){
+                 tmp = this.randomNum(0,curTotal);
+                 console.log(tmp);
+                curTotal -= tmp;
+            }else{
+                tmp = curTotal
+            }
+            item.options[i].personCount = tmp;
+            item.options[i].percent = this.getPercent(parseInt(tmp),parseInt(item.maxPC));
+      
+        }
+
+        item.personCount = this.wTotalCount;
+
+      })
+    },
     exportJSON () {
       // 将json转换成字符串
       const data = JSON.stringify(this.jsonContent)
@@ -177,6 +236,7 @@ export default {
      
       return (isNaN(res)?1:res)*100 + '%'; 
     },
+    
     answerText2Excel(questionId) {
       this.answerText2ExcelQeustionId = questionId;
       designOpera({
@@ -219,6 +279,7 @@ export default {
             this.jsonContent = data.msg;
             this.detail=data.msg.questions;
             let that = this;
+            this.wTotalCount=parseInt(this.jsonContent.totalPerson);
             this.detail.map(function(item,index) {
               item.options.map(function(item2){
                  item2['percent']= that.getPercent(item2.personCount , item.personCount)

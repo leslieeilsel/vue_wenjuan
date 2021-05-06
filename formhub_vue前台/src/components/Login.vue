@@ -85,7 +85,9 @@ export default {
         if(data.code==500){
           this.$router.push({path:'/login'})
         }else{
-         sessionStorage.setItem("uid", data.msg)
+          this.$cookieStore.setCookie("uid", data.msg)
+
+        //  sessionStorage.setItem("uid", data.msg)
           this.$router.push({path:'/home'})
 
         }
@@ -113,8 +115,10 @@ export default {
                   duration: 3000
                 });
                 this.$router.push({path:'/home'});  //跳转到用户主页面
-                sessionStorage.setItem("username", username)   //将用户名存入session中
-                sessionStorage.setItem("uid", uid)
+                this.$cookieStore.setCookie("username", username)
+                this.$cookieStore.setCookie("uid", uid)
+                // sessionStorage.setItem("username", username)   //将用户名存入session中
+                // sessionStorage.setItem("uid", uid)
                 this.$emit("state");  //将状态传到base页面
               }
               else {
@@ -140,6 +144,7 @@ export default {
 
 <style scoped>
   /* 主页面样式 */
+ 
   .login {
     position: absolute;  /*绝对定位*/
     width:100%;
@@ -156,10 +161,10 @@ export default {
 /* 登录部分div样式 */
   .main_login {
     position: absolute;
-    left:48%;
+    left:50%;
     top:40%;
     width:320px;
-    margin:-190px 0 0 -190px;
+    transform: translate(-50%, -50%);
     padding:40px;
     border-radius: 5px;  /*圆角边框*/
     background: #F2F6FC;

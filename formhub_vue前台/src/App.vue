@@ -24,6 +24,7 @@ export default {
   html,body{
     padding: 0;
     margin: 0;
-      background-color: #fafafa;
+    height: 100vh;
+    background-color: #fafafa;
   }
 </style>

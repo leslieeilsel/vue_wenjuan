@@ -4,9 +4,9 @@ return array(
 	'db_type'=>'mysql',
 	'db_host'=>'localhost',
 	'db_port'=>'3306',
-	'db_name'=>'数据库名',
-	'db_user'=>'数据库用户名',
-	'db_pass'=>'数据库密码',
+	'db_name'=>'w_db',
+	'db_user'=>'w_user',
+	'db_pass'=>'123456789',
 	'charset'=>'utf8',
 	//默认路由
 	'default_Controller'=>'Index',

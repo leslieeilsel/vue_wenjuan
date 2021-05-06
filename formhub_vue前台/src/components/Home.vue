@@ -295,7 +295,6 @@
       }
     },
     mounted(){
-      
       this.logincheck();
       this.getWjList();
     },
@@ -372,9 +371,10 @@
         this.editing = false;
       },
       logincheck(){
+        
         loginStatus({})
       .then(data=>{
-        //console.log(data);
+        console.log(data);
         if(data.code==500){
           this.$router.push({path:'/login'})
         }else{
@@ -600,7 +600,7 @@
           startpage: this.startpage,
           pagesize: this.pagesize,
           createTime : this.createTimeRule,
-          id: sessionStorage.getItem('uid')
+          id: this.$cookieStore.getCookie("uid")
         })
           .then(data=>{
             //console.log(data);
