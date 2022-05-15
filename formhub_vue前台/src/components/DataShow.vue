@@ -166,7 +166,6 @@
 </template>
 <script>
 import FileSaver from "file-saver";
-import echarts from "echarts";
 import { getWenjuan } from "./api";
 export default {
   data() {

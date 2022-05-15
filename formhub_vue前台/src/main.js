@@ -10,6 +10,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import VueClipboard from "vue-clipboard2";
 import md5 from "./md5";
 import moment from 'moment'
+import * as echarts from "echarts";
 import {setCookie,getCookie,delCookie} from '@/assets/cookie'
 import './assets/myeleui.css' // 修改eleui样式
 Vue.prototype.$cookieStore = {setCookie,getCookie,delCookie}
@@ -26,6 +27,7 @@ Vue.filter('dateformat', function (dataStr, pattern = 'YYYY-MM-DD') {
 Vue.use(VueClipboard);
 Vue.use(ElementUI);
 Vue.use(md5);
+Vue.use(echarts);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
