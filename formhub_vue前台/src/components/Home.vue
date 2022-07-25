@@ -761,7 +761,8 @@ export default {
     },
     logincheck() {
       loginStatus({}).then(data => {
-        console.log(data);
+        // 本地调试读取uid失败
+        this.$cookieStore.setCookie('userid2', parseInt(data.msg));
         if (data.code == 500) {
           this.$router.push({ path: "/login" });
         } else {
@@ -981,9 +982,8 @@ export default {
         startpage: this.startpage,
         pagesize: this.pagesize,
         createTime: this.createTimeRule,
-        id: this.$cookieStore.getCookie("uid")
+        id: this.$cookieStore.getCookie("userid2")
       }).then(data => {
-        //console.log(data);
         this.wjList = data.msg;
         this.loading = false;
         //获取当前选中问卷题目

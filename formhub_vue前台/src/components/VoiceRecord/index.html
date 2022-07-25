@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button type="button" id="start-btn">开始录音</button>
+<button type="button" id="stop-btn">停止录音</button>
+<button type="button" id="play-btn">播放录音</button>
+<a href="https://www.misterma.com">Mr. Ma's Blog misterma.com</a>
+</body>
+<script>
+    const startBtn = document.querySelector('#start-btn');  // 开始录音按钮
+const stopBtn = document.querySelector('#stop-btn');  // 停止录音按钮
+const playBtn = document.querySelector('#play-btn');  // 播放录音按钮
+let mediaRecorder = null;  // 存放 MediaRecorder
+let audioData = [];  // 存储录音数据块
+
+// 开始录音按钮点击
+
+startBtn.addEventListener('click', () => {
+  // 请求麦克风权限
+  
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    // 创建媒体记录
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
+    // 开始录制
+    mediaRecorder.start();
+
+    // 处理音频数据
+    mediaRecorder.addEventListener('dataavailable', ev => {
+      // 把数据块添加到数组
+      audioData.push(ev.data);
+    });
+
+    // 录音停止
+    mediaRecorder.addEventListener('stop', () => {
+      // 把音频数据块转换为 Blob
+      audioData = new Blob(audioData);
+    });
+  }).catch(info => {
+    alert('无法获取麦克风权限！错误信息：' + info);
+  });
+});
+
+// 停止录音按钮点击
+stopBtn.addEventListener('click', () => {
+  mediaRecorder.stop();
+});
+
+// 播放录音按钮点击
+playBtn.addEventListener('click', () => {
+  if (audioData === null) return false;
+  // 创建一个 URL 资源对象给 Audio 读取
+  const audio = new Audio(URL.createObjectURL(audioData));
+  // 播放音频
+  audio.play();
+});
+</script>
+</html>

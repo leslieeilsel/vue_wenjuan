@@ -11,6 +11,7 @@ import Index from '@/components/Index'
 import Home from '@/components/Home'
 import Display from '@/components/Display'
 import ThankYou from '@/components/ThankYou'
+import VoiceRecord from '@/components/VoiceRecord/VoiceRecord'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
           path: '/index',
           name: 'Index',
           component: Index
+        },
+        {
+          path: '/voice',
+          name: 'Voice',
+          component: VoiceRecord
         },
         {
           path: '/login',

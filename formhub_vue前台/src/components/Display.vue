@@ -47,15 +47,18 @@
         </el-checkbox-group>
 
         <!--填空题展示-->
-        <el-input
-          v-if="item.qtype=='3'"
+        <div v-if="item.qtype=='3'">
+          <el-input
           :rows="5"
           type="textarea"
           v-model="item.content"
           maxlength=140
           placeholder="140字最多"
           resize="none">
+          
         </el-input>
+        <el-button type="primary"  @click="recordVoice" >录入语音</el-button>
+        </div>
 
       </el-card>
        <el-button type="primary" style="margin: 5px;" v-show="submitShow" @click="submit" :loading="submitLoading">{{submitText}}</el-button>
@@ -149,6 +152,9 @@
           })
     },
     methods:{
+      recordVoice() {
+
+      },
       checkReflash(e) {
         this.$forceUpdate()
       }, 
