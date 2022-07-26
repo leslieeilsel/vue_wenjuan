@@ -243,6 +243,8 @@ export default {
 
 <style scoped>
 .container {
+    margin-top:10px;
+    height: 30px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -251,6 +253,7 @@ export default {
 .press {
     display: flex;
     height: 40px;
+    padding: 10px;
     background-color: #39b54a;
     color: white;
     justify-content: center;

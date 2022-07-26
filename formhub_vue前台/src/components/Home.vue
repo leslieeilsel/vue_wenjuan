@@ -721,7 +721,7 @@ export default {
   },
   methods: {
     test(wid, index) {
-      console.log(wid, index);
+      //console.log(wid, index);
     },
     zero() {
       this.$confirm(

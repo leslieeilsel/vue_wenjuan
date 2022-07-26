@@ -51,13 +51,11 @@
           <el-input
           :rows="5"
           type="textarea"
-          v-model="item.content"
           maxlength=140
           placeholder="140字最多"
           resize="none">
-          
         </el-input>
-        <el-button type="primary"  @click="recordVoice" >录入语音</el-button>
+        <VoiceRecord/>
         </div>
 
       </el-card>
@@ -71,8 +69,12 @@
   </div>
 </template>
 <script>
+  import VoiceRecord from './VoiceRecord/VoiceRecord.vue'
   import {answerOpera, getWenjuan, uploadW} from './api'
   export default{
+    components: {
+      VoiceRecord
+    },
     data(){
       return{
         mustBeArr: [],
@@ -273,7 +275,6 @@
   }
 </script>
 <style scoped>
-  
   .display{
     text-align: center;
     padding: 20px;
