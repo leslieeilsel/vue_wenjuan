@@ -202,7 +202,7 @@
           })
       },
       //提交问卷
-      submit(){
+       submit(){
         this.submitLoading=true;
         this.submitText='提交中';
         var wjId=this.$route.params.id;
@@ -210,7 +210,7 @@
         let wjquestions = [];
         let wjoptions = [];
         let wjqarr = [];
-        this.detail.questions.forEach(item=>{
+        this.detail.questions.forEach(async item=>{
           // 必选逻辑
           if(item.qtype=='1' && !item.radioValue) {
           
@@ -224,7 +224,11 @@
             
             return;
           }
-    
+          if(item.content.duration){
+            await upfile(item.content).then((data)=>{
+              item.content = data;
+            })
+          }
           wjquestions.push({'id':item.id, 'content': item.content})
           wjqarr.push(item.id);
           if(item.qtype=='1') {
@@ -249,7 +253,6 @@
               return 
             }
         }
-        
         uploadW({
          'questions': wjquestions,
          'options': wjoptions
