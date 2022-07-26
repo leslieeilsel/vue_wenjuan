@@ -226,7 +226,7 @@
           }
           if(item.content.duration){
             await upfile(item.content).then((data)=>{
-              item.content = data;
+              item.content = "upload" + data;
             })
           }
           wjquestions.push({'id':item.id, 'content': item.content})

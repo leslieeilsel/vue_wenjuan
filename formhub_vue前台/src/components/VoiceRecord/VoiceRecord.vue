@@ -10,9 +10,9 @@
 
     <div v-for="item in voiceList" :key="item.stream.id" class="voice-list">
         <el-button type="primary" plain @click="play(item)">播放{{ item.duration.toFixed(0)}} s</el-button>
-        <el-button type="warning" @click="handleDelOpen(item)" style="margin-left: 10px">删除</el-button>
+        <el-button v-if="!justPlay" type="warning" @click="handleDelOpen(item)" style="margin-left: 10px">删除</el-button>
     </div>
-    <div @mousedown="start" @mouseup="end" class="press" v-show="canInputVoice">{{ title }}</div>
+    <div v-if="!justPlay" @mousedown="start" @mouseup="end" class="press" v-show="canInputVoice">{{ title }}</div>
     <!-- 支持绘制波浪图  -->
     <canvas id="canvas"></canvas>
 </div>
@@ -22,7 +22,7 @@
 import Recorder from 'js-audio-recorder'
 import _ from 'loadsh'
 export default {
-    props: ['getVoice'],
+    props: ['getVoice', 'justPlay'],
     data() {
         return {
             streamList: [{

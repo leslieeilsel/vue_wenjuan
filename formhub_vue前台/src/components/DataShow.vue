@@ -143,30 +143,17 @@
           effect="dark"
           style="margin-left:5px"
         >
-          {{ jdItem }}
+
+          {{ jdItem.startWith("upload")?<VoiceRecord justPlay="true"/>:jdItem }}
         </el-tag>
       </div>
     </el-card>
-    <!-- <el-dialog title="详细内容" :visible.sync="dialogTableVisible">
-      <el-table :data="tableData">
-        <el-table-column property="context" label="答案"></el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size.sync="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
-      </el-pagination>
-    </el-dialog> -->
   </div>
 </template>
 <script>
 import FileSaver from "file-saver";
 import { getWenjuan } from "./api";
+import VoiceRecord from "./VoiceRecord/VoiceRecord.vue";
 export default {
   data() {
     return {
@@ -292,7 +279,6 @@ export default {
       getWenjuan({
         id: this.wjId
       }).then(data => {
-        //  data = JSON.parse(data)
         this.jsonContent = data.msg;
         this.detail = data.msg.questions;
         let that = this;
@@ -303,7 +289,6 @@ export default {
               item2.personCount,
               item.personCount
             );
-            //console.log( item2['percent']);
             return item2;
           });
 
