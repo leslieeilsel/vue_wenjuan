@@ -63,6 +63,7 @@ export const wenjuanList = data => {
 // 上传答卷
 export const uploadW = (data,wid,isUpload = false) => {
   let wj = {data: JSON.stringify(data)}
+  console.log(wj)
   return axios({
     method:"POST",
     url:"/api/wenjuan/id/"+wid,
@@ -74,6 +75,16 @@ export const uploadW = (data,wid,isUpload = false) => {
      data: dataFormat(wj)
   }).then(res => res.data);
 };
+export const upfile = (data) => {
+  return axios({
+    url:"/api/file",
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data
+  })
+}
 // 人数0 
 export const setZero = (wid) => {
   return axios({

@@ -52,10 +52,11 @@
           :rows="5"
           type="textarea"
           maxlength=140
+          v-model="item.content"
           placeholder="140字最多"
           resize="none">
         </el-input>
-        <VoiceRecord/>
+        <VoiceRecord :getVoice="recordVoice(item)"/>
         </div>
 
       </el-card>
@@ -154,8 +155,10 @@
           })
     },
     methods:{
-      recordVoice() {
-
+      recordVoice(item) {
+        return (data)=>{
+          item.content = data;
+        }
       },
       checkReflash(e) {
         this.$forceUpdate()
@@ -218,7 +221,7 @@
             return;
           }
            if(item.qtype=='3' && !item.content) {
-           
+            
             return;
           }
     
@@ -246,7 +249,7 @@
               return 
             }
         }
-       
+        
         uploadW({
          'questions': wjquestions,
          'options': wjoptions

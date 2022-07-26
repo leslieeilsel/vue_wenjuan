@@ -22,6 +22,7 @@
 import Recorder from 'js-audio-recorder'
 import _ from 'loadsh'
 export default {
+    props: ['getVoice'],
     data() {
         return {
             streamList: [{
@@ -58,7 +59,7 @@ export default {
     watch: {
         // 如果大于60s 停止录音
         time(val) {
-            if (val > 60) {
+            if (val > 300) {
                 this.end()
             }
         }
@@ -75,9 +76,9 @@ export default {
             navigator.mediaDevices.getUserMedia({
                 audio: true
             }).then(stream => {
-                console.log("获取语音录制")
+                //console.log("获取语音录制")
             })
-            console.log(`${error.name} : ${error.message}`)
+            //console.log(`${error.name} : ${error.message}`)
         })
         // this.startCanvas()
     },
@@ -89,53 +90,6 @@ export default {
         handleDelClose() {
             this.dialogVisible = false;
             this.delVoice(this.willRemoveRecoardItem);
-        },
-        startCanvas() {
-            // 录音波浪
-            this.oCanvas = document.getElementById('canvas')
-            this.ctx = this.oCanvas.getContext('2d')
-        },
-        /**
-         * 绘制波浪图-录音
-         * */
-        drawRecord() {
-            // 用requestAnimationFrame稳定60fps绘制
-            this.drawRecordId = requestAnimationFrame(this.drawRecord)
-
-            // 实时获取音频大小数据
-            const dataArray = this.recorder.getRecordAnalyseData()
-            const bufferLength = dataArray.length
-
-            // 填充背景色
-            this.ctx.fillStyle = 'rgb(200, 200, 200)'
-            this.ctx.fillRect(0, 0, this.oCanvas.width, this.oCanvas.height)
-
-            // 设定波形绘制颜色
-            this.ctx.lineWidth = 2
-            this.ctx.strokeStyle = 'rgb(0, 0, 0)'
-
-            this.ctx.beginPath()
-
-            var sliceWidth = this.oCanvas.width * 1.0 / bufferLength // 一个点占多少位置，共有bufferLength个点要绘制
-            var x = 0 // 绘制点的x轴位置
-
-            for (var i = 0; i < bufferLength; i++) {
-                var v = dataArray[i] / 128.0
-                var y = v * this.oCanvas.height / 2
-
-                if (i === 0) {
-                    // 第一个点
-                    this.ctx.moveTo(x, y)
-                } else {
-                    // 剩余的点
-                    this.ctx.lineTo(x, y)
-                }
-                // 依次平移，绘制所有点
-                x += sliceWidth
-            }
-
-            this.ctx.lineTo(this.oCanvas.width, this.oCanvas.height / 2)
-            this.ctx.stroke()
         },
         // 播放录音
         // 播放录音支持快速点击重复播放同一个录音，支持切换播放
@@ -149,13 +103,13 @@ export default {
             // getCurrentPlayTime()是个大坑，不能实时获取
             // 这里用到的两个0.1s延时必要的。否则切换语音播放时计算进度条动画会有问题
             setTimeout(() => {
-                console.log("播放")
+                //console.log("播放")
                 const r = _.cloneDeep(recorder)
                 recorder.play() // 播放录音
                 // 播放时长
                 this.currenPlayTimer = setInterval(() => {
                     try {
-                        console.log(recorder.percentage);
+                        //console.log(recorder.percentage);
                         const num = r.getPlayTime().toFixed(2) / r.duration.toFixed(2) * 100
                         if (num < 100) {
                             recorder.percentage = num
@@ -191,7 +145,6 @@ export default {
             this.drawRecordId && cancelAnimationFrame(this.drawRecordId)
             this.drawRecordId = null
             // 如果录音小于1.5秒就提示录音过短，toFixed是四舍五入所以是小于1.5秒
-            console.log(this.recorder)
             if (this.recorder.duration.toFixed(0) < 1) {
                 this.$message.error('时常过短，请重新录制')
                 this.recorder.destroy()
@@ -203,12 +156,12 @@ export default {
             }
             this.recorder.percentage = 0
             this.voiceList.push(this.recorder)
-            console.log(this.voiceList)
             this.recorder = new Recorder()
             setTimeout(() => {
                 this.time = 1
                 this.title = this.state.normal
             }, 100)
+            this.getVoiceList();
         },
         // 删除录音
         delVoice(item) {
@@ -217,12 +170,13 @@ export default {
             this.voiceList = _.remove(this.voiceList, (i) => {
                 return i.stream.id !== item.stream.id
             })
+            this.getVoiceList();
         },
         // 上传录音
         getVoiceList() {
             const urlList = []
             for (const item of this.voiceList) {
-                console.log(item.duration.toFixed(0))
+                //console.log(item.duration.toFixed(0))
                 const blob = item.getWAVBlob()
                 const newbolb = new Blob([blob], {
                     type: 'audio/wav'
@@ -231,6 +185,9 @@ export default {
                 fileOfBlob.duration = parseInt(item.duration.toFixed(0))
                 urlList.push(fileOfBlob)
             }
+            // 目前难以区分相关的两段语音 故 强制只能上传一个
+            this.getVoice(urlList[0]);
+            //console.log(urlList[0])
             return urlList
         },
         // 清除录音
