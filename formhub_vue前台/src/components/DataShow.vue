@@ -136,16 +136,17 @@
       </div>
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
 
-      <div v-if="item.qtype == '3' && item.content">
-        <el-tag
-          v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)"
-          :key="jdIndex"
-          effect="dark"
-          style="margin-left:5px"
-        >
-
-          {{ jdItem.startWith("upload")?<VoiceRecord justPlay="true"/>:jdItem }}
-        </el-tag>
+      <div style="display: flex" v-if="item.qtype == '3' && item.content">
+        <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex">
+            <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')"/>
+            <el-tag 
+            v-if="!jdItem.startsWith('upload')"
+            effect="dark"
+            style="margin-left:5px"
+          >
+            {{jdItem}}
+          </el-tag>
+        </div>
       </div>
     </el-card>
   </div>
