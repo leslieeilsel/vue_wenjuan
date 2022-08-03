@@ -139,15 +139,14 @@
       <div style="display: flex; flex-wrap: wrap;
     gap: 10px;" v-if="item.qtype == '3' && item.content">
         
-        <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex">
+        <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex" style="">
             <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')" :voicedown="[jdItem.replace('upload', '')]"/>
-            <el-tag 
+            <div
             v-if="!jdItem.startsWith('upload')"
-            effect="dark"
-            style="margin-left:5px"
+            class="jiandaanswer"
           >
             {{jdItem}}
-          </el-tag>
+          </div>
         </div>
       </div>
     </el-card>
@@ -495,6 +494,12 @@ export default {
 };
 </script>
 <style scoped>
+.jiandaanswer{
+  background-color:#409EFF; padding: 5px; color: #fff; padding: 0 10px;
+    line-height: 30px; border-radius: 4px;word-break: break-all;font-size: 12px;
+    border-width: 1px;
+    border-style: solid;
+}
 .Count {
   height: 100vh;
 }
