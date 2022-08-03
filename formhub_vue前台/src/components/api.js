@@ -75,16 +75,29 @@ export const uploadW = (data,wid,isUpload = false) => {
      data: dataFormat(wj)
   }).then(res => res.data);
 };
-export const upfile = (data) => {
-  return axios({
-    url:"/api/file",
-    method: 'post',
+export const upfile = async (data) => {
+  const form = new FormData();
+  form.append('upfile', data);
+  
+  return await axios.post("/api/file", form, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+})}
+
+export const downfile = async (filename) => {
+  
+  return await axios.get("/api/file",{
     headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    data
+      filename
+    }
+  }).then((data)=>{
+    const newbolb = new Blob([data], {
+      type: 'audio/wav'
   })
-}
+  return new File([newbolb], new Date().getTime() + '.wav')
+  })}
+
 // 人数0 
 export const setZero = (wid) => {
   return axios({

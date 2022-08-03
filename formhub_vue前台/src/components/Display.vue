@@ -56,7 +56,7 @@
           placeholder="140字最多"
           resize="none">
         </el-input>
-        <VoiceRecord :getVoice="recordVoice(item)"/>
+        <VoiceRecord :getVoice="recordVoice(item)" :voicedown="[]" />
         </div>
 
       </el-card>
@@ -71,7 +71,7 @@
 </template>
 <script>
   import VoiceRecord from './VoiceRecord/VoiceRecord.vue'
-  import {answerOpera, getWenjuan, uploadW} from './api'
+  import {answerOpera, getWenjuan, uploadW, upfile } from './api'
   export default{
     components: {
       VoiceRecord
@@ -210,7 +210,7 @@
         let wjquestions = [];
         let wjoptions = [];
         let wjqarr = [];
-        this.detail.questions.forEach(async item=>{
+        this.detail.questions.forEach(item=>{
           // 必选逻辑
           if(item.qtype=='1' && !item.radioValue) {
           
@@ -224,12 +224,14 @@
             
             return;
           }
-          if(item.content.duration){
-            await upfile(item.content).then((data)=>{
-              item.content = "upload" + data;
+          if(item && item.content && item.content.duration){
+            console.log(item.content)
+            upfile(item.content).then(({data:{msg}})=>{
+              item.content = "upload" + msg;
             })
           }
           wjquestions.push({'id':item.id, 'content': item.content})
+          console.log({'id':item.id, 'content': item.content})
           wjqarr.push(item.id);
           if(item.qtype=='1') {
             wjoptions.push(item.radioValue);

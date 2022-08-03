@@ -8,9 +8,6 @@ final class FileController extends BaseController
     public function index()
     {
         $this->upload_dir = getcwd().'\\voice\\';
-        if ( !$_SESSION[ 'uid' ] ) {
-            $this->json( 500, '未登录' );
-        }
         $this->id = ID;
         if ( METHOD === 'POST' ) {
             // 登录
@@ -32,11 +29,13 @@ final class FileController extends BaseController
         function makefilename() {
             //根据上传时间生成上传文件名
             $current = getdate();
-            $filename = $current[ 'year' ].$current[ 'mon' ].$current[ 'mday' ].$current[ 'hours' ].$current[ 'minutes' ].$current[ 'seconds' ].'.jpg';
+            $filename = $current[ 'year' ].$current[ 'mon' ].$current[ 'mday' ].$current[ 'hours' ].$current[ 'minutes' ].$current[ 'seconds' ].'.wav';
             return $filename;
         }
         $newfilname = makefilename();
         $newfile = $this->upload_dir.$newfilname;
+        $newfile = str_replace("\\","/",$newfile);
+       
         if ( file_exists( $_FILES[ 'upfile' ][ 'tmp_name' ] ) ) {
             move_uploaded_file( $_FILES[ 'upfile' ][ 'tmp_name' ], $newfile );
             $this->json( 200, $newfilname );
@@ -49,9 +48,10 @@ final class FileController extends BaseController
         //下载文件名
         $file_dir = $this->upload_dir;
         //下载文件存放目录
-        $filename = $_GET[ 'filename' ];
+        $filename = ID;
+        $file_dir = str_replace("\\","/",$file_dir);
         //检查文件是否存在
-        if ( ! file_exists ( $file_dir . '\\' . $filename ) ) {
+        if ( ! file_exists ( $file_dir . $filename ) ) {
             header( 'HTTP/1.1 404 NOT FOUND' );
         } else {
             //以只读和二进制模式打开文件

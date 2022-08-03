@@ -137,8 +137,9 @@
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
 
       <div style="display: flex" v-if="item.qtype == '3' && item.content">
+        
         <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex">
-            <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')"/>
+            <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')" :voicedown="[jdItem.replace('upload', '')]"/>
             <el-tag 
             v-if="!jdItem.startsWith('upload')"
             effect="dark"
@@ -175,6 +176,9 @@ export default {
       wTotalCount: 0
     };
   },
+   components: {
+      VoiceRecord
+    },
   mounted() {
     // this.dataAnalysis()
     // //console.log('数据分析');
@@ -295,7 +299,7 @@ export default {
 
           return item;
         });
-
+        console.log(this.detail)
         this.visible = [];
         this.loading = false;
       });
@@ -359,7 +363,6 @@ export default {
     getParOptionData(arr) {
       let res = [];
       arr.forEach(item => {
-        //console.log(item);
         res.push(item.title);
       });
       return res;
