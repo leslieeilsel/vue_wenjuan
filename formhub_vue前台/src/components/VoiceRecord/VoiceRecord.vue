@@ -93,8 +93,8 @@ export default {
     }
   },
   computed: {
-    getVoiceUrl(){
-        return `https://fbapi.aoyixiu.cn/file/id/${this.voiceList[0]}`
+    getVoiceUrl() {
+      return `https://fbapi.aoyixiu.cn/file/id/${this.voiceList[0]}`;
     },
     // 控制最多录制三个
     canInputVoice() {
@@ -110,13 +110,8 @@ export default {
           .getUserMedia({
             audio: true
           })
-          .then(stream => {
-            //console.log("获取语音录制")
-          });
-        //console.log(`${error.name} : ${error.message}`)
       }
     );
-    // this.startCanvas()
   },
   methods: {
     handleDelOpen(item) {
@@ -130,15 +125,6 @@ export default {
     // 播放录音
     // 播放录音支持快速点击重复播放同一个录音，支持切换播放
     play(recorder) {
-      console.log(recorder, this.voiceList);
-      if (!item.stopPlay && this.justPlay) {
-        !this.voiceList &&
-          downfile(recorder).then(recorder => {
-            this.voiceList = [recorder];
-          });
-        // Player.play([this.voiceList[0]])
-        return;
-      }
       clearInterval(this.currenPlayTimer);
       for (const item of this.voiceList) {
         item.stopPlay();
@@ -148,7 +134,6 @@ export default {
       // getCurrentPlayTime()是个大坑，不能实时获取
       // 这里用到的两个0.1s延时必要的。否则切换语音播放时计算进度条动画会有问题
       setTimeout(() => {
-        //console.log("播放")
         const r = _.cloneDeep(recorder);
         recorder.play(); // 播放录音
         // 播放时长
@@ -176,7 +161,6 @@ export default {
     start() {
       this.recorder = new Recorder();
       this.recorder.start(); // 开始录音
-      // this.drawRecord()
       this.timer = setInterval(() => {
         this.show = true;
         this.state.during = this.time++;
