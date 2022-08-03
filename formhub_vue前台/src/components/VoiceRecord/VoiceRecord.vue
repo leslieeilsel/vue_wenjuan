@@ -32,7 +32,9 @@
       v-if="!justPlay"
       @mousedown="start"
       @mouseup="end"
+      @touchend="end" @touchstart="start"
       class="press"
+      style=" "
       v-show="canInputVoice"
     >
       {{ title }}
@@ -230,6 +232,7 @@ export default {
 
 <style scoped>
 .container {
+  user-select: none;
   height: 30px;
   width: 100%;
   display: flex;

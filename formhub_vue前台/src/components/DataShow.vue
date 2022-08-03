@@ -293,6 +293,7 @@ export default {
 
           return item;
         });
+        console.log(this.detail)
         this.visible = [];
         this.loading = false;
       });
