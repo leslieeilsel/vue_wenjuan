@@ -28,8 +28,6 @@ Vue.use(VueClipboard);
 Vue.use(ElementUI);
 Vue.use(md5);
 Vue.use(echarts);
-Vue.config.productionTip = false;
-
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

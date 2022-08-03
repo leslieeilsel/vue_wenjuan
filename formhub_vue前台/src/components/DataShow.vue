@@ -153,6 +153,7 @@
   </div>
 </template>
 <script>
+import * as echarts from "echarts";
 import FileSaver from "file-saver";
 import { getWenjuan } from "./api";
 import VoiceRecord from "./VoiceRecord/VoiceRecord.vue";
