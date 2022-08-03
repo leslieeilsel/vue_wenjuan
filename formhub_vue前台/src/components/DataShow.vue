@@ -136,7 +136,8 @@
       </div>
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
 
-      <div style="display: flex" v-if="item.qtype == '3' && item.content">
+      <div style="display: flex; flex-wrap: wrap;
+    gap: 10px;" v-if="item.qtype == '3' && item.content">
         
         <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex">
             <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')" :voicedown="[jdItem.replace('upload', '')]"/>

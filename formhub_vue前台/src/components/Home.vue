@@ -108,7 +108,7 @@
       <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
       <!--</el-tooltip>-->
     </div>
-    <div class="m-opera" v-if="(isMobile && !isPC) || wjList.length==0">
+    <div class="m-opera" v-if="(isMobile && !isPC) || wjList.length == 0">
       <el-tooltip class="item" effect="dark" content="返回问卷列表">
         <el-button type="text" @click.stop.prevent="backWenjuanList"
           >返回问卷列表</el-button
@@ -341,63 +341,68 @@
             点击上方&nbsp;+&nbsp;创建第一个问卷
           </div>
           <el-menu-item
-            style="height:auto"
+            style="height:auto;"
             v-for="(item, index) in wjList"
             :key="index"
             :index="(index + 1).toString()"
             @click="wjClick(item.wenjuan_id, index)"
           >
-            <div @click="test(item.wenjuan_id, index)">
-              <i class="el-icon-tickets"></i>
-              <span slot="title" style="display: inline-block">
-                <span
-                  style="color: #F56C6C;font-size: 13px;"
-                  v-if="item.status == 0"
-                >
-                  <i
-                    class="el-icon-link"
-                    style="margin:0;font-size: 13px;color: #F56C6C;width:10px;"
-                  ></i>
-                  未发布
+          
+              <div @click="test(item.wenjuan_id, index)">
+                <i class="el-icon-tickets"></i>
+                <span slot="title" style="display: inline-block">
+                  <span
+                    style="color: #F56C6C;font-size: 13px;"
+                    v-if="item.status == 0"
+                  >
+                    <i
+                      class="el-icon-link"
+                      style="margin:0;font-size: 13px;color: #F56C6C;width:10px;"
+                    ></i>
+                    未发布
+                  </span>
+                  <span
+                    style="color: #67C23A;font-size: 13px;"
+                    v-if="item.status == 1"
+                  >
+                    <i
+                      class="el-icon-link"
+                      style="margin:0;font-size: 13px;color: #67C23A;width:10px;"
+                    ></i>
+                    已发布
+                  </span>
+                  {{ item.title }}
                 </span>
-                <span
-                  style="color: #67C23A;font-size: 13px;"
-                  v-if="item.status == 1"
-                >
-                  <i
-                    class="el-icon-link"
-                    style="margin:0;font-size: 13px;color: #67C23A;width:10px;"
-                  ></i>
-                  已发布
-                </span>
-                {{ item.title }}
-              </span>
-            </div>
-            <div>
-              <div style="line-height:100%">
-                <el-tag effect="dark" style="margin-left:5px"
-                  >已填报:{{ item.personCount }}人</el-tag
-                >
-                <el-tag effect="dark" style="margin-left:5px"
-                  >期望:{{ item.totalPerson }}人</el-tag
-                >
-                <el-tag effect="dark" style="margin-left:5px">
-                  完成比例:{{
-                    (item.personCount / item.totalPerson).toFixed(2) * 100
-                  }}%</el-tag
-                >
               </div>
-              <div style="line-height:100%">
-                <el-tag effect="dark" style="margin-left:5px"
-                  >有效期: 【{{
-                    new Date(parseInt(item.timeCreated))
-                      | dateformat("YY-MM-DD HH:mm:ss")
-                  }}】-【{{
-                    new Date(parseInt(item.timeEnd))
-                      | dateformat("YY-MM-DD HH:mm:ss")
-                  }}】</el-tag
-                >
-              </div>
+            <div
+              style="    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;"
+            >
+                <div style="line-height:100%">
+                  <el-tag effect="dark" style="margin-left:5px"
+                    >已填报:{{ item.personCount }}人</el-tag
+                  >
+                  <el-tag effect="dark" style="margin-left:5px"
+                    >期望:{{ item.totalPerson }}人</el-tag
+                  >
+                  <el-tag effect="dark" style="margin-left:5px">
+                    完成比例:{{
+                      (item.personCount / item.totalPerson).toFixed(2) * 100
+                    }}%</el-tag
+                  >
+                </div>
+                <div style="line-height:100%">
+                  <el-tag effect="dark" style="margin-left:5px"
+                    >有效期: 【{{
+                      new Date(parseInt(item.timeCreated))
+                        | dateformat("YY-MM-DD HH:mm:ss")
+                    }}】-【{{
+                      new Date(parseInt(item.timeEnd))
+                        | dateformat("YY-MM-DD HH:mm:ss")
+                    }}】</el-tag
+                  >
+                </div>
             </div>
           </el-menu-item>
         </el-menu>
@@ -762,7 +767,7 @@ export default {
     logincheck() {
       loginStatus({}).then(data => {
         // 本地调试读取uid失败
-        this.$cookieStore.setCookie('userid2', parseInt(data.msg));
+        this.$cookieStore.setCookie("userid2", parseInt(data.msg));
         if (data.code == 500) {
           this.$router.push({ path: "/login" });
         } else {
@@ -1090,7 +1095,6 @@ export default {
   pointer-events: none;
 }
 @media screen and (max-width: 540px) {
- 
   .home .leftNav {
     width: 100%;
     height: calc(100vh - 50px);
