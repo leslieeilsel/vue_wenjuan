@@ -32,7 +32,6 @@
       v-if="!justPlay"
       @mousedown="start"
       @mouseup="end"
-      @touchend="end" @touchstart="start"
       class="press"
       style=" "
       v-show="canInputVoice"
@@ -108,10 +107,9 @@ export default {
     Recorder.getPermission().then(
       () => {},
       error => {
-        navigator.mediaDevices
-          .getUserMedia({
-            audio: true
-          })
+        navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
       }
     );
   },
@@ -177,6 +175,7 @@ export default {
       this.drawRecordId && cancelAnimationFrame(this.drawRecordId);
       this.drawRecordId = null;
       // 如果录音小于1.5秒就提示录音过短，toFixed是四舍五入所以是小于1.5秒
+      console.log("end", this.recorder.duration);
       if (this.recorder.duration.toFixed(0) < 1) {
         this.$message.error("时常过短，请重新录制");
         this.recorder.destroy();
@@ -232,6 +231,12 @@ export default {
 
 <style scoped>
 .container {
+  -webkit-touch-callout: none; /*系统默认菜单被禁用*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -khtml-user-select: none; /*早期浏览器*/
+  -moz-user-select: none; /*火狐*/
+  -ms-user-select: none; /*IE10*/
+  user-select: none;
   user-select: none;
   height: 30px;
   width: 100%;
