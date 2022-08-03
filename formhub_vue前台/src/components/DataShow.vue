@@ -180,13 +180,11 @@ export default {
       VoiceRecord
     },
   mounted() {
-    // this.dataAnalysis()
-    // //console.log('数据分析');
+    this.dataAnalysis()
   },
   methods: {
     handleChange(qid, oid) {
       let cur = this.detail[qid].options[oid];
-
       cur.percent = this.getPercent(
         parseInt(cur.personCount),
         parseInt(this.detail[qid].maxPC)
@@ -219,7 +217,6 @@ export default {
         for (let i = 0; i < item.options.length; i++) {
           if (i < item.options.length - 1) {
             tmp = this.randomNum(0, curTotal);
-            console.log(tmp);
             curTotal -= tmp;
           } else {
             tmp = curTotal;
@@ -242,8 +239,6 @@ export default {
     },
 
     getPercent(count, total) {
-      //console.log("-------");
-      //console.log(count, total);
       let res = (count / total).toFixed(2);
 
       return (isNaN(res) ? 1 : res) * 100 + "%";
@@ -263,8 +258,6 @@ export default {
     //切换图表
     changeValue(num, value) {
       this.$set(this.visible, num, value);
-      //console.log("num=" + num);
-      //console.log("value=" + value);
       if (value == 1) {
         this.setImg(num);
       } else if (value == 2) {
@@ -299,7 +292,6 @@ export default {
 
           return item;
         });
-        console.log(this.detail)
         this.visible = [];
         this.loading = false;
       });
@@ -328,7 +320,6 @@ export default {
     },
     //柱状图
     setImg(id) {
-      //console.log(this.detail[id])
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("img" + id))
       );
@@ -409,7 +400,6 @@ export default {
     },
     // 圆环图
     setRing(id) {
-      ////console.log(id);
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("ring" + id))
       );
@@ -454,7 +444,6 @@ export default {
     },
     //圆环图
     setTz(id) {
-      ////console.log(id);
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("tz" + id))
       );
