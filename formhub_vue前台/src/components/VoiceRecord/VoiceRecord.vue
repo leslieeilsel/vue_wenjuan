@@ -7,18 +7,19 @@
         <el-button type="primary" @click="handleDelClose()">确 定</el-button>
       </span>
     </el-dialog>
-    <div @mouseup="end" v-if="this.show"><VoiceRecordTips  /></div>
+    <div @touchend="end" @mouseup="end" v-if="this.show"><VoiceRecordTips  /></div>
     
     <div
       v-for="item in voiceList"
       :key="item.stream ? item.stream.id : 0"
       class="voice-list"
     >
-      <audio v-if="justPlay" controls :src="getVoiceUrl" style="height: 30px">
+      <audio v-if="justPlay" controls :src="getVoiceUrl" style="height: 30px;">
         Your browser does not support the
         <code>audio</code> element.
       </audio>
-      <el-button type="primary" v-if="!justPlay" plain @click="play(item)"
+      <div v-if="!justPlay" style="display: flex; justify-content: space-between; width: 100%; margin-top: 5px">
+        <el-button type="primary"  plain @click="play(item)"
         >播放{{ item.duration && item.duration.toFixed(0) + "s" }}
       </el-button>
       <el-button
@@ -28,10 +29,13 @@
         style="margin-left: 10px"
         >删除</el-button
       >
+      </div>
     </div>
     <div
       v-if="!justPlay"
       @mousedown="start"
+      @touchstart="start"
+      @touchend="end"
       @mouseup="end"
       class="press"
       style=" "
@@ -108,6 +112,10 @@ export default {
     }
   },
   mounted() {
+    document.addEventListener('contextmenu', (e)=>{
+      e.preventDefault();
+    });
+    document.ontouchend =  null;
     this.recorder = new Recorder();
     Recorder.getPermission().then(
       () => {},
