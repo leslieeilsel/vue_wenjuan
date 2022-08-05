@@ -91,11 +91,12 @@
             type="textarea"
             maxlength="140"
             v-model="item.content"
+            @input="()=>{inputReflash('voiceRecord' + index)}"
             placeholder="140字最多"
             resize="none"
           >
           </el-input>
-          <VoiceRecord :getVoice="recordVoice(item)" :voicedown="[]" />
+          <VoiceRecord :ref="'voiceRecord' + index" :getVoice="recordVoice(item)" :voicedown="[]" />
         </div>
       </el-card>
       <el-button
@@ -201,6 +202,10 @@ export default {
       return data => {
         item.content = data;
       };
+    },
+    inputReflash(voiceRecordRef) {
+      this.$refs[voiceRecordRef][0].clearAll();
+      this.$forceUpdate();
     },
     checkReflash(e) {
       this.$forceUpdate();

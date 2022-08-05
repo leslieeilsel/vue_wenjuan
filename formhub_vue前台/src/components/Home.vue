@@ -1083,10 +1083,9 @@ export default {
     position: relative;
   }
   .home .m-opera {
-    display: block;
+    display: flex;
+    justify-content: space-evenly;
     z-index: 999;
-    text-align-last: center;
-    width: 100%;
   }
   .home .opera {
     display: none;

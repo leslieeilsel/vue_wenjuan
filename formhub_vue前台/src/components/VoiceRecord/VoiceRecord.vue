@@ -7,7 +7,8 @@
         <el-button type="primary" @click="handleDelClose()">确 定</el-button>
       </span>
     </el-dialog>
-
+    <div @mouseup="end" v-if="this.show"><VoiceRecordTips  /></div>
+    
     <div
       v-for="item in voiceList"
       :key="item.stream ? item.stream.id : 0"
@@ -45,9 +46,13 @@
 
 <script>
 import Recorder from "js-audio-recorder";
+import VoiceRecordTips from "./VoiceRecordTips.vue";
 import _ from "loadsh";
 import { downfile } from "../api";
 export default {
+  components: {
+    VoiceRecordTips
+  },
   props: ["getVoice", "justPlay", "voicedown"],
   data() {
     return {
@@ -195,7 +200,7 @@ export default {
     // 删除录音
     delVoice(item) {
       this.isShowRemoveRecoard = false;
-      item.stopPlay();
+      item && item.stopPlay();
       this.voiceList = _.remove(this.voiceList, i => {
         return i.stream.id !== item.stream.id;
       });
