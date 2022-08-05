@@ -73,11 +73,11 @@ export const uploadW = (data,wid,isUpload = false) => {
      data: dataFormat(wj)
   }).then(res => res.data);
 };
-export const upfile = async (data) => {
+export const upfile =  (data) => {
   const form = new FormData();
   form.append('upfile', data);
   
-  return await axios.post("/api/file", form, {
+  return  axios.post("/api/file", form, {
   headers: {
     'Content-Type': 'multipart/form-data'
   }

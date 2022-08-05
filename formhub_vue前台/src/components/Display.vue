@@ -240,7 +240,7 @@ export default {
       });
     },
     //提交问卷
-    submit() {
+    async submit() {
       this.submitLoading = true;
       this.submitText = "提交中";
       var wjId = this.$route.params.id;
@@ -248,7 +248,7 @@ export default {
       let wjquestions = [];
       let wjoptions = [];
       let wjqarr = [];
-      this.detail.questions.forEach(item => {
+      for(let item of this.detail.questions){
         // 必选逻辑
         if (item.qtype == "1" && !item.radioValue) {
           return;
@@ -263,9 +263,8 @@ export default {
           return;
         }
         if (item && item.content && item.content.duration) {
-          upfile(item.content).then(({ data: { msg } }) => {
-            item.content = "upload" + msg;
-          });
+          let {data: {msg}} =  await upfile(item.content);
+          item.content = "upload" + msg;
         }
         wjquestions.push({ id: item.id, content: item.content });
         wjqarr.push(item.id);
@@ -276,7 +275,7 @@ export default {
             wjoptions.push(item2);
           });
         }
-      });
+      };
       for (let i = 0; i < this.mustBeArr.length; i++) {
         if (wjqarr.indexOf(this.mustBeArr[i]) == -1) {
           this.submitLoading = false;
