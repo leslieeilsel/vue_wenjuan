@@ -256,16 +256,16 @@ export default {
       for(let item of this.detail.questions){
         // 必选逻辑
         if (item.qtype == "1" && !item.radioValue) {
-          return;
+          continue;
         }
         if (
           item.qtype == "2" &&
           (item.checkboxValue.length == 0 || !item.checkboxValue)
         ) {
-          return;
+          continue;
         }
         if (item.qtype == "3" && !item.content) {
-          return;
+          continue;
         }
         if (item && item.content && item.content.duration) {
           let {data: {msg}} =  await upfile(item.content);
