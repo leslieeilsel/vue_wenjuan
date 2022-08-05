@@ -139,7 +139,6 @@ export default {
         // 播放时长
         this.currenPlayTimer = setInterval(() => {
           try {
-            //console.log(recorder.percentage);
             const num =
               (r.getPlayTime().toFixed(2) / r.duration.toFixed(2)) * 100;
             if (num < 100) {
@@ -175,7 +174,6 @@ export default {
       this.drawRecordId && cancelAnimationFrame(this.drawRecordId);
       this.drawRecordId = null;
       // 如果录音小于1.5秒就提示录音过短，toFixed是四舍五入所以是小于1.5秒
-      console.log("end", this.recorder.duration);
       if (this.recorder.duration.toFixed(0) < 1) {
         this.$message.error("时常过短，请重新录制");
         this.recorder.destroy();
@@ -207,7 +205,6 @@ export default {
     getVoiceList() {
       const urlList = [];
       for (const item of this.voiceList) {
-        //console.log(item.duration.toFixed(0))
         const blob = item.getWAVBlob();
         const newbolb = new Blob([blob], {
           type: "audio/wav"
@@ -218,7 +215,6 @@ export default {
       }
       // 目前难以区分相关的两段语音 故 强制只能上传一个
       this.getVoice(urlList[0]);
-      //console.log(urlList[0])
       return urlList;
     },
     // 清除录音

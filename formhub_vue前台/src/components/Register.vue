@@ -17,9 +17,6 @@
           label-width="100px"
           class="demo-registeForm"
         >
-          <!-- <el-form-item  label="用户名" prop="username">
-              <el-input @keyup.enter.native="Register('registerForm')" v-model="registerForm.username" placeholder="请输入用户名(8-15位)"></el-input>
-            </el-form-item> -->
           <el-form-item label="用户名" prop="username">
             <el-input
               @keyup.enter.native="Register('registerForm')"
@@ -51,10 +48,21 @@
             </el-input>
           </el-form-item>
           <el-form-item label="验证码" prop="captcha" class="captchaForm">
-              <el-input class="capthchaInput"  width="50%" v-model="registerForm.captcha" autocomplete="off" placeholder="请输入验证码">
-              </el-input>
-              <img src="" ref="capthcha" class="capthchaImg" @click="getCaptcha()">
-            </el-form-item>
+            <el-input
+              class="capthchaInput"
+              width="50%"
+              v-model="registerForm.captcha"
+              autocomplete="off"
+              placeholder="请输入验证码"
+            >
+            </el-input>
+            <img
+              src=""
+              ref="capthcha"
+              class="capthchaImg"
+              @click="getCaptcha()"
+            />
+          </el-form-item>
           <!-- 注册，重置按钮 -->
           <el-form-item style="margin-left: -25%">
             <!-- 登录页面链接 -->
@@ -179,20 +187,17 @@ export default {
   },
   // 方法定义
   methods: {
-    logincheck(){
-        loginStatus({})
-      .then(data=>{
- 
-        if(data.code==500){
-          this.$router.push({path:'/register'})
-        }else{
-          this.$cookieStore.setCookie("uid", data.msg)
+    logincheck() {
+      loginStatus({}).then(data => {
+        if (data.code == 500) {
+          this.$router.push({ path: "/register" });
+        } else {
+          this.$cookieStore.setCookie("uid", data.msg);
 
-        //  sessionStorage.setItem("uid", data.msg)
-          this.$router.push({path:'/home'})
-
+          //  sessionStorage.setItem("uid", data.msg)
+          this.$router.push({ path: "/home" });
         }
-      })
+      });
     },
     //获取验证码
     getCaptcha() {
@@ -294,15 +299,14 @@ export default {
   font-size: 8px;
 }
 .capthchaImg {
-    width: 35%;
-    height: 34px;
-    float: left;
-      border: 1px solid grey;
-  }
-  .capthchaInput{
-  
-    height: 40px;
-    float: left;
-    width: 60%;
-  }
+  width: 35%;
+  height: 34px;
+  float: left;
+  border: 1px solid grey;
+}
+.capthchaInput {
+  height: 40px;
+  float: left;
+  width: 60%;
+}
 </style>

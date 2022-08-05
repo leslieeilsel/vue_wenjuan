@@ -104,9 +104,6 @@
           :disabled="nowSelect.id == 0 || nowSelect.id == null"
         ></el-button>
       </el-tooltip>
-      <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-      <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-      <!--</el-tooltip>-->
     </div>
     <div class="m-opera" v-if="(isMobile && !isPC) || wjList.length == 0">
       <el-tooltip class="item" effect="dark" content="返回问卷列表">
@@ -213,9 +210,6 @@
           :disabled="nowSelect.id == 0 || nowSelect.id == null"
         ></el-button>
       </el-tooltip>
-      <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-      <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-      <!--</el-tooltip>-->
     </div>
     <el-row>
       <el-col :span="6" class="leftNav">
@@ -322,9 +316,6 @@
               :disabled="nowSelect.id == 0 || nowSelect.id == null"
             ></el-button>
           </el-tooltip>
-          <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-          <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-          <!--</el-tooltip>-->
         </div>
 
         <!--左侧导航栏-->
@@ -347,62 +338,61 @@
             :index="(index + 1).toString()"
             @click="wjClick(item.wenjuan_id, index)"
           >
-          
-              <div @click="test(item.wenjuan_id, index)">
-                <i class="el-icon-tickets"></i>
-                <span slot="title" style="display: inline-block">
-                  <span
-                    style="color: #F56C6C;font-size: 13px;"
-                    v-if="item.status == 0"
-                  >
-                    <i
-                      class="el-icon-link"
-                      style="margin:0;font-size: 13px;color: #F56C6C;width:10px;"
-                    ></i>
-                    未发布
-                  </span>
-                  <span
-                    style="color: #67C23A;font-size: 13px;"
-                    v-if="item.status == 1"
-                  >
-                    <i
-                      class="el-icon-link"
-                      style="margin:0;font-size: 13px;color: #67C23A;width:10px;"
-                    ></i>
-                    已发布
-                  </span>
-                  {{ item.title }}
+            <div>
+              <i class="el-icon-tickets"></i>
+              <span slot="title" style="display: inline-block">
+                <span
+                  style="color: #F56C6C;font-size: 13px;"
+                  v-if="item.status == 0"
+                >
+                  <i
+                    class="el-icon-link"
+                    style="margin:0;font-size: 13px;color: #F56C6C;width:10px;"
+                  ></i>
+                  未发布
                 </span>
-              </div>
+                <span
+                  style="color: #67C23A;font-size: 13px;"
+                  v-if="item.status == 1"
+                >
+                  <i
+                    class="el-icon-link"
+                    style="margin:0;font-size: 13px;color: #67C23A;width:10px;"
+                  ></i>
+                  已发布
+                </span>
+                {{ item.title }}
+              </span>
+            </div>
             <div
               style="    display: flex;
     flex-wrap: wrap;
     gap: 10px;"
             >
-                <div style="line-height:100%">
-                  <el-tag effect="dark" style="margin-left:5px"
-                    >已填报:{{ item.personCount }}人</el-tag
-                  >
-                  <el-tag effect="dark" style="margin-left:5px"
-                    >期望:{{ item.totalPerson }}人</el-tag
-                  >
-                  <el-tag effect="dark" style="margin-left:5px">
-                    完成比例:{{
-                      (item.personCount / item.totalPerson).toFixed(2) * 100
-                    }}%</el-tag
-                  >
-                </div>
-                <div style="line-height:100%">
-                  <el-tag effect="dark" style="margin-left:5px"
-                    >有效期: 【{{
-                      new Date(parseInt(item.timeCreated))
-                        | dateformat("YY-MM-DD HH:mm:ss")
-                    }}】-【{{
-                      new Date(parseInt(item.timeEnd))
-                        | dateformat("YY-MM-DD HH:mm:ss")
-                    }}】</el-tag
-                  >
-                </div>
+              <div style="line-height:100%">
+                <el-tag effect="dark" style="margin-left:5px"
+                  >已填报:{{ item.personCount }}人</el-tag
+                >
+                <el-tag effect="dark" style="margin-left:5px"
+                  >期望:{{ item.totalPerson }}人</el-tag
+                >
+                <el-tag effect="dark" style="margin-left:5px">
+                  完成比例:{{
+                    (item.personCount / item.totalPerson).toFixed(2) * 100
+                  }}%</el-tag
+                >
+              </div>
+              <div style="line-height:100%">
+                <el-tag effect="dark" style="margin-left:5px"
+                  >有效期: 【{{
+                    new Date(parseInt(item.timeCreated))
+                      | dateformat("YY-MM-DD HH:mm:ss")
+                  }}】-【{{
+                    new Date(parseInt(item.timeEnd))
+                      | dateformat("YY-MM-DD HH:mm:ss")
+                  }}】</el-tag
+                >
+              </div>
             </div>
           </el-menu-item>
         </el-menu>
@@ -525,8 +515,6 @@
       </el-form>
 
       <div style="width: 100%;text-align: right">
-        <!-- <el-button style="margin-left: 10px;" @click="openTemp">从模板库创建</el-button> -->
-
         <el-button style="margin-left: 10px;" @click="dialogShow = false"
           >取消</el-button
         >
@@ -725,9 +713,6 @@ export default {
     }
   },
   methods: {
-    test(wid, index) {
-      //console.log(wid, index);
-    },
     zero() {
       this.$confirm(
         "确定重置" +
@@ -743,7 +728,6 @@ export default {
         this.loading = true;
 
         setZero(this.nowSelect.id).then(data => {
-          //console.log(data);
           if (data.code == 200) {
             this.$message({
               type: "success",
@@ -778,7 +762,6 @@ export default {
     //预览模板问卷
     lookTempWj(item) {
       let url = window.location.origin + "/tempdisplay/" + item.tempid; //问卷链接
-      //console.log(url);
       window.open(url);
     },
     //发布问卷/暂停问卷
@@ -849,7 +832,6 @@ export default {
     //预览问卷
     previewWj() {
       let url = window.location.origin + "/display/" + this.nowSelect.id; //问卷链接
-      //console.log(url);
       window.open(url);
     },
     //编辑问卷
@@ -859,7 +841,6 @@ export default {
 
       this.editing = true;
       this.isSecret = this.nowSelect.code != "0" ? true : false;
-      //alert(this.nowSelect.mustLogin);
       this.isLoginUpload = this.nowSelect.mustLogin != "0" ? true : false;
       this.dialogTitle = "编辑问卷";
     },

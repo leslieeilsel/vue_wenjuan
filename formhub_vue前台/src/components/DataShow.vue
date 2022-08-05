@@ -75,7 +75,6 @@
               ></el-input-number>
             </template>
           </el-table-column>
-
           <el-table-column
             prop="percent"
             label="占比"
@@ -136,16 +135,23 @@
       </div>
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
 
-      <div style="display: flex; flex-wrap: wrap;
-    gap: 10px;" v-if="item.qtype == '3' && item.content">
-        
-        <div v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)" :key="jdIndex" style="">
-            <VoiceRecord justPlay="true" v-if="jdItem.startsWith('upload')" :voicedown="[jdItem.replace('upload', '')]"/>
-            <div
-            v-if="!jdItem.startsWith('upload')"
-            class="jiandaanswer"
-          >
-            {{jdItem}}
+      <div
+        style="display: flex; flex-wrap: wrap;
+    gap: 10px;"
+        v-if="item.qtype == '3' && item.content"
+      >
+        <div
+          v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)"
+          :key="jdIndex"
+          style=""
+        >
+          <VoiceRecord
+            justPlay="true"
+            v-if="jdItem.startsWith('upload')"
+            :voicedown="[jdItem.replace('upload', '')]"
+          />
+          <div v-if="!jdItem.startsWith('upload')" class="jiandaanswer">
+            {{ jdItem }}
           </div>
         </div>
       </div>
@@ -177,11 +183,11 @@ export default {
       wTotalCount: 0
     };
   },
-   components: {
-      VoiceRecord
-    },
+  components: {
+    VoiceRecord
+  },
   mounted() {
-    this.dataAnalysis()
+    this.dataAnalysis();
   },
   methods: {
     handleChange(qid, oid) {
@@ -269,7 +275,7 @@ export default {
         this.setTz(num);
       }
     },
-    //      请求后端数据
+    //请求后端数据
     dataAnalysis(id) {
       this.loading = true;
       this.detail = [];
@@ -293,7 +299,7 @@ export default {
 
           return item;
         });
-        console.log(this.detail)
+        console.log(this.detail);
         this.visible = [];
         this.loading = false;
       });
@@ -495,11 +501,17 @@ export default {
 };
 </script>
 <style scoped>
-.jiandaanswer{
-  background-color:#409EFF; padding: 5px; color: #fff; padding: 0 10px;
-    line-height: 30px; border-radius: 4px;word-break: break-all;font-size: 12px;
-    border-width: 1px;
-    border-style: solid;
+.jiandaanswer {
+  background-color: #409eff;
+  padding: 5px;
+  color: #fff;
+  padding: 0 10px;
+  line-height: 30px;
+  border-radius: 4px;
+  word-break: break-all;
+  font-size: 12px;
+  border-width: 1px;
+  border-style: solid;
 }
 .Count {
   height: 100vh;

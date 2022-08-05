@@ -193,7 +193,6 @@ export default {
         if (data.msg == "请输入正确提取码") {
           (this.dialogTitle = "输入提取码"), (this.dialogShow = true);
         }
-        // this.$router.push({path:'/login'});//跳到欢迎页
       }
     });
   },
@@ -301,7 +300,6 @@ export default {
           //提交成功
           this.submitLoading = false;
           this.submitText = "提交成功";
-
           this.$cookieStore.setCookie("formhub", wjId, 360000); //删除cookie
           this.$router.push({ path: "/thankyou" }); //跳到欢迎页
         } else {

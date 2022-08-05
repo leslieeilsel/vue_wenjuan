@@ -157,7 +157,6 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
- 
   .el-dropdown-menu {
     left: 50% !important;
     transform: translateX(-50%) !important;
