@@ -1,18 +1,13 @@
-# This is a basic workflow that is manually triggered
+#!/bin/sh
 
-name: Manual workflow
+set -eux
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on:
-  push:
-    branches: [main]
+REP="formhub"
+LANGUAGE="zh-CN"
+UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  bot:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Notify Server'
-        run: bash ./notify.sh
- 
+curl \
+  -H "Accept-Language: $LANGUAGE" \
+  -H "User-Agent: $UA" \
+  -o result.html \
+  cicdnotify.aoyixiu.cn/index?ref=$REP
