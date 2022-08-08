@@ -1,4 +1,4 @@
-name: 'GitHub Actions Weather Bot'
+name: 'GitHub Actions CICD NOTIFY'
 
 on:
   push:
@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'cicd'
-        run: bash ./manual3.sh
+        run: bash ./notify.sh
