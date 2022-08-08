@@ -1,0 +1,11 @@
+name: 'GitHub Actions CICD NOTIFY'
+
+on:
+  push:
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'cicd'
+        run: bash ./notify.sh
