@@ -7,5 +7,6 @@ jobs:
   bot:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: 'cicd'
         run: bash ./notify.sh
