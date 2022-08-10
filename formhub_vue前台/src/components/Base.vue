@@ -24,7 +24,7 @@
               plain
               style="font-size: 15px;"
               @click="toLogin"
-              >登录</el-button
+              >登录8888888888</el-button
             >
             <el-button plain style="font-size: 15px;" @click="toRegiste"
               >注册</el-button
