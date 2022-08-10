@@ -10,4 +10,4 @@ curl \
   -H "Accept-Language: $LANGUAGE" \
   -H "User-Agent: $UA" \
   -o result.html \
-  cicdnotify.aoyixiu.cn/index?ref=$REP
+  cicdnotify.aoyixiu.cn/index.php?ref=$REP
