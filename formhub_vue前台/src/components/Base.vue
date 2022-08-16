@@ -64,7 +64,7 @@ export default {
   },
   mounted() {
     this.state();
-    console.log(123);
+    // console.log(123);
     if (document.body.clientWidth < 540) {
       this.isPC = false;
     }
@@ -157,7 +157,6 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
- 
   .el-dropdown-menu {
     left: 50% !important;
     transform: translateX(-50%) !important;

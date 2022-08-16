@@ -49,7 +49,6 @@ export const loginStatus = data => {
 };
 // 问卷列表
 export const wenjuanList = data => {
-  //console.log(data.id);
   return axios({
     method:"GET",
     url:"/api/plaza/id/"+data.id,
@@ -74,6 +73,29 @@ export const uploadW = (data,wid,isUpload = false) => {
      data: dataFormat(wj)
   }).then(res => res.data);
 };
+export const upfile =  (data) => {
+  const form = new FormData();
+  form.append('upfile', data);
+  
+  return  axios.post("/api/file", form, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+})}
+
+export const downfile = async (filename) => {
+  
+  return await axios.get("/api/file",{
+    headers: {
+      filename
+    }
+  }).then((data)=>{
+    const newbolb = new Blob([data], {
+      type: 'audio/wav'
+  })
+  return new File([newbolb], new Date().getTime() + '.wav')
+  })}
+
 // 人数0 
 export const setZero = (wid) => {
   return axios({
@@ -87,7 +109,6 @@ export const setZero = (wid) => {
 };
 // 单个问卷
 export const getWenjuan = (data,code='0') => {
-  //console.log(code);
   let url = "/api/wenjuan/id/"+data.id
   return axios({
     method:"GET",
@@ -167,7 +188,6 @@ export const deleteW = id => {
 // 修改问题基本信息
 export const updateQ = (data1,qid) => {
   let q = {data: JSON.stringify(data1.questions)}
-  //console.log(data1.questions);
   return axios({
     method:"PUT",
     url:"/api/question/id/"+qid,
@@ -191,7 +211,6 @@ export const deleteQ = id => {
 };
 // 添加选项
 export const addOptions = (data1,qid) => {
-  //console.log(qid);
   let q = {data: JSON.stringify(data1)}
   return axios({
     method:"post",

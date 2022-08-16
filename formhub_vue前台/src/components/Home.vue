@@ -104,11 +104,8 @@
           :disabled="nowSelect.id == 0 || nowSelect.id == null"
         ></el-button>
       </el-tooltip>
-      <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-      <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-      <!--</el-tooltip>-->
     </div>
-    <div class="m-opera" v-if="(isMobile && !isPC) || wjList.length==0">
+    <div class="m-opera" v-if="(isMobile && !isPC) || wjList.length == 0">
       <el-tooltip class="item" effect="dark" content="返回问卷列表">
         <el-button type="text" @click.stop.prevent="backWenjuanList"
           >返回问卷列表</el-button
@@ -213,9 +210,6 @@
           :disabled="nowSelect.id == 0 || nowSelect.id == null"
         ></el-button>
       </el-tooltip>
-      <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-      <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-      <!--</el-tooltip>-->
     </div>
     <el-row>
       <el-col :span="6" class="leftNav">
@@ -322,9 +316,6 @@
               :disabled="nowSelect.id == 0 || nowSelect.id == null"
             ></el-button>
           </el-tooltip>
-          <!--<el-tooltip class="item" effect="dark" content="添加模板库" placement="bottom">-->
-          <!--<el-button icon="el-icon-upload" type="text"class="rightButton" @click="addTemp"></el-button>-->
-          <!--</el-tooltip>-->
         </div>
 
         <!--左侧导航栏-->
@@ -341,13 +332,13 @@
             点击上方&nbsp;+&nbsp;创建第一个问卷
           </div>
           <el-menu-item
-            style="height:auto"
+            style="height:auto;"
             v-for="(item, index) in wjList"
             :key="index"
             :index="(index + 1).toString()"
             @click="wjClick(item.wenjuan_id, index)"
           >
-            <div @click="test(item.wenjuan_id, index)">
+            <div>
               <i class="el-icon-tickets"></i>
               <span slot="title" style="display: inline-block">
                 <span
@@ -373,7 +364,11 @@
                 {{ item.title }}
               </span>
             </div>
-            <div>
+            <div
+              style="    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;"
+            >
               <div style="line-height:100%">
                 <el-tag effect="dark" style="margin-left:5px"
                   >已填报:{{ item.personCount }}人</el-tag
@@ -520,8 +515,6 @@
       </el-form>
 
       <div style="width: 100%;text-align: right">
-        <!-- <el-button style="margin-left: 10px;" @click="openTemp">从模板库创建</el-button> -->
-
         <el-button style="margin-left: 10px;" @click="dialogShow = false"
           >取消</el-button
         >
@@ -720,9 +713,6 @@ export default {
     }
   },
   methods: {
-    test(wid, index) {
-      console.log(wid, index);
-    },
     zero() {
       this.$confirm(
         "确定重置" +
@@ -738,7 +728,6 @@ export default {
         this.loading = true;
 
         setZero(this.nowSelect.id).then(data => {
-          //console.log(data);
           if (data.code == 200) {
             this.$message({
               type: "success",
@@ -761,7 +750,8 @@ export default {
     },
     logincheck() {
       loginStatus({}).then(data => {
-        console.log(data);
+        // 本地调试读取uid失败
+        this.$cookieStore.setCookie("userid2", parseInt(data.msg));
         if (data.code == 500) {
           this.$router.push({ path: "/login" });
         } else {
@@ -772,7 +762,6 @@ export default {
     //预览模板问卷
     lookTempWj(item) {
       let url = window.location.origin + "/tempdisplay/" + item.tempid; //问卷链接
-      //console.log(url);
       window.open(url);
     },
     //发布问卷/暂停问卷
@@ -843,7 +832,6 @@ export default {
     //预览问卷
     previewWj() {
       let url = window.location.origin + "/display/" + this.nowSelect.id; //问卷链接
-      //console.log(url);
       window.open(url);
     },
     //编辑问卷
@@ -853,7 +841,6 @@ export default {
 
       this.editing = true;
       this.isSecret = this.nowSelect.code != "0" ? true : false;
-      //alert(this.nowSelect.mustLogin);
       this.isLoginUpload = this.nowSelect.mustLogin != "0" ? true : false;
       this.dialogTitle = "编辑问卷";
     },
@@ -981,9 +968,8 @@ export default {
         startpage: this.startpage,
         pagesize: this.pagesize,
         createTime: this.createTimeRule,
-        id: this.$cookieStore.getCookie("uid")
+        id: this.$cookieStore.getCookie("userid2")
       }).then(data => {
-        //console.log(data);
         this.wjList = data.msg;
         this.loading = false;
         //获取当前选中问卷题目
@@ -1090,7 +1076,6 @@ export default {
   pointer-events: none;
 }
 @media screen and (max-width: 540px) {
- 
   .home .leftNav {
     width: 100%;
     height: calc(100vh - 50px);
@@ -1098,10 +1083,9 @@ export default {
     position: relative;
   }
   .home .m-opera {
-    display: block;
+    display: flex;
+    justify-content: space-evenly;
     z-index: 999;
-    text-align-last: center;
-    width: 100%;
   }
   .home .opera {
     display: none;

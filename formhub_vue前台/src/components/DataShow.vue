@@ -75,7 +75,6 @@
               ></el-input-number>
             </template>
           </el-table-column>
-
           <el-table-column
             prop="percent"
             label="占比"
@@ -136,37 +135,34 @@
       </div>
       <!--如果数据库中的问题类型为text类型则将数据以弹窗表格的形式进行显示-->
 
-      <div v-if="item.qtype == '3' && item.content">
-        <el-tag
+      <div
+        style="display: flex; flex-wrap: wrap;
+    gap: 10px;"
+        v-if="item.qtype == '3' && item.content"
+      >
+        <div
           v-for="(jdItem, jdIndex) in item.content.split('&$%').slice(0, -1)"
           :key="jdIndex"
-          effect="dark"
-          style="margin-left:5px"
+          style=""
         >
-          {{ jdItem }}
-        </el-tag>
+          <VoiceRecord
+            justPlay="true"
+            v-if="jdItem.startsWith('upload')"
+            :voicedown="[jdItem.replace('upload', '')]"
+          />
+          <div v-if="!jdItem.startsWith('upload')" class="jiandaanswer">
+            {{ jdItem }}
+          </div>
+        </div>
       </div>
     </el-card>
-    <!-- <el-dialog title="详细内容" :visible.sync="dialogTableVisible">
-      <el-table :data="tableData">
-        <el-table-column property="context" label="答案"></el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size.sync="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
-      </el-pagination>
-    </el-dialog> -->
   </div>
 </template>
 <script>
+import * as echarts from "echarts";
 import FileSaver from "file-saver";
 import { getWenjuan } from "./api";
+import VoiceRecord from "./VoiceRecord/VoiceRecord.vue";
 export default {
   data() {
     return {
@@ -187,14 +183,15 @@ export default {
       wTotalCount: 0
     };
   },
+  components: {
+    VoiceRecord
+  },
   mounted() {
-    // this.dataAnalysis()
-    // //console.log('数据分析');
+    this.dataAnalysis();
   },
   methods: {
     handleChange(qid, oid) {
       let cur = this.detail[qid].options[oid];
-
       cur.percent = this.getPercent(
         parseInt(cur.personCount),
         parseInt(this.detail[qid].maxPC)
@@ -227,7 +224,6 @@ export default {
         for (let i = 0; i < item.options.length; i++) {
           if (i < item.options.length - 1) {
             tmp = this.randomNum(0, curTotal);
-            console.log(tmp);
             curTotal -= tmp;
           } else {
             tmp = curTotal;
@@ -250,8 +246,6 @@ export default {
     },
 
     getPercent(count, total) {
-      //console.log("-------");
-      //console.log(count, total);
       let res = (count / total).toFixed(2);
 
       return (isNaN(res) ? 1 : res) * 100 + "%";
@@ -271,8 +265,6 @@ export default {
     //切换图表
     changeValue(num, value) {
       this.$set(this.visible, num, value);
-      //console.log("num=" + num);
-      //console.log("value=" + value);
       if (value == 1) {
         this.setImg(num);
       } else if (value == 2) {
@@ -283,7 +275,7 @@ export default {
         this.setTz(num);
       }
     },
-    //      请求后端数据
+    //请求后端数据
     dataAnalysis(id) {
       this.loading = true;
       this.detail = [];
@@ -292,7 +284,6 @@ export default {
       getWenjuan({
         id: this.wjId
       }).then(data => {
-        //  data = JSON.parse(data)
         this.jsonContent = data.msg;
         this.detail = data.msg.questions;
         let that = this;
@@ -303,13 +294,12 @@ export default {
               item2.personCount,
               item.personCount
             );
-            //console.log( item2['percent']);
             return item2;
           });
 
           return item;
         });
-
+        console.log(this.detail);
         this.visible = [];
         this.loading = false;
       });
@@ -338,7 +328,6 @@ export default {
     },
     //柱状图
     setImg(id) {
-      //console.log(this.detail[id])
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("img" + id))
       );
@@ -373,7 +362,6 @@ export default {
     getParOptionData(arr) {
       let res = [];
       arr.forEach(item => {
-        //console.log(item);
         res.push(item.title);
       });
       return res;
@@ -420,7 +408,6 @@ export default {
     },
     // 圆环图
     setRing(id) {
-      ////console.log(id);
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("ring" + id))
       );
@@ -465,7 +452,6 @@ export default {
     },
     //圆环图
     setTz(id) {
-      ////console.log(id);
       let myChart = echarts.init(
         this.resizeMyChartContainer(document.getElementById("tz" + id))
       );
@@ -515,6 +501,18 @@ export default {
 };
 </script>
 <style scoped>
+.jiandaanswer {
+  background-color: #409eff;
+  padding: 5px;
+  color: #fff;
+  padding: 0 10px;
+  line-height: 30px;
+  border-radius: 4px;
+  word-break: break-all;
+  font-size: 12px;
+  border-width: 1px;
+  border-style: solid;
+}
 .Count {
   height: 100vh;
 }
