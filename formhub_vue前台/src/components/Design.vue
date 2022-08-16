@@ -8,89 +8,24 @@
     <div class="top" v-if="desc != ''">
       {{ detail.intro }}
     </div>
-    <el-card
-      class="box-card"
-      v-for="(item, index) in detail.questions"
-      :key="index"
-      style="margin: 10px;"
-    >
-      <div slot="header" class="clearfix">
-        <div class="questionTitle">
-          <!--显示必填标识-->
-          <span style="color: #F56C6C;">
-            <span v-if="item.mustbe == '1'">*</span>
-            <span v-else>&nbsp;</span>
-          </span>
-          <span style="color: black;margin-right: 3px;">{{
-            index + 1 + "."
-          }}</span>
-          {{ item.qtitle }}
-        </div>
-        <div style="float: right;">
-          <el-button
-            style="padding: 2px"
-            type="text"
-            @click="editorQuestion(item)"
-            >编辑</el-button
-          >
-          <el-button
-            style="padding: 2px;color: #F56C6C"
-            type="text"
-            @click="deleteQuestion(item.id, index)"
-            >删除</el-button
-          >
-        </div>
-      </div>
-
-      <!--单选题展示-->
-      <div
-        class="text item"
-        v-for="(option, index) in item.options"
-        :key="index"
-      >
-        <div v-if="item.qtype == '1'">
-          <el-radio
-            v-model="item.radioValue"
-            :label="option.id"
-            style="margin: 5px;"
-            >{{ option.title }}</el-radio
-          >
-        </div>
-      </div>
-
-      <!--多选题展示-->
-      <el-checkbox-group v-if="item.qtype == '2'" v-model="item.checkboxValue">
-        <div
-          class="text item"
-          v-for="(option, index) in item.options"
-          :key="index"
-        >
-          <el-checkbox
-            :label="option.id"
-            :key="option.id"
-            @change="checkReflash"
-            style="margin: 5px;"
-            >{{ option.title }}</el-checkbox
-          >
-        </div>
-      </el-checkbox-group>
-
-      <!--填空题展示-->
-      <el-input
-        v-if="item.qtype == '3'"
-        type="textarea"
-        :rows="5"
-        resize="none"
-      >
-      </el-input>
-    </el-card>
     <el-button
       icon="el-icon-circle-plus"
       @click="addQuestion"
       style="margin-top: 10px;"
       >添加题目</el-button
     >
-
+    
+       <el-button
+      icon="el-icon-circle-plus"
+      @click="addQuestion"
+      style="margin-top: 10px;"
+      >添加题目</el-button
+    >
+    
+    <DesignQuestionCard :detail="detail"
+    :isDisplay = "false"
+    :editorQuestion="editorQuestion"
+    :deleteQuestion="deleteQuestion"/>
     <br /><br /><br /><br /><br />
 
     <!--添加题目弹窗-->
@@ -212,7 +147,11 @@ import {
   updateO,
   addOptions
 } from "./api";
+import DesignQuestionCard from './DesignQuestionCard.vue'
 export default {
+  components: {
+    DesignQuestionCard
+  },
   data() {
     return {
       editing: false, // 编辑
@@ -255,9 +194,6 @@ export default {
     };
   },
   methods: {
-    checkReflash(e) {
-      this.$forceUpdate();
-    },
     dialogClose() {
       this.editing = false;
     },
@@ -361,7 +297,6 @@ export default {
     },
     //确认添加/保存题目
     checkAddQuestion() {
-
       if (this.editing) {
         let type = this.willAddQuestion.type;
         let newItem = {}; //新添加的问题对象.
@@ -546,10 +481,6 @@ export default {
 .Design .addOptionButton {
   display: inline-block;
   margin-left: 80px;
-}
-.box-card {
-  width: 100%;
-  text-align: left;
 }
 .Design .top {
   color: #606266;

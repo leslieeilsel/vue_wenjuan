@@ -32,73 +32,8 @@
       <div class="top" v-if="detail.intro != ''">
         {{ detail.intro }}
       </div>
-      <el-card
-        class="box-card"
-        v-for="(item, index) in detail.questions"
-        :key="index"
-      >
-        <div slot="header" class="clearfix">
-          <div class="questionTitle">
-            <!--显示必填标识-->
-            <span style="color: #F56C6C;">
-              <span v-if="item.mustbe == '1'">*</span>
-              <span v-else>&nbsp;</span>
-            </span>
-            {{ index + 1 + "." + item.qtitle }}
-          </div>
-        </div>
-
-        <!--单选题展示-->
-        <div
-          class="text item"
-          :key="index"
-          v-for="(optionItem, index) in item.options"
-        >
-          <div v-if="item.qtype == '1'">
-            <el-radio
-              v-model="item.radioValue"
-              :label="optionItem.id"
-              style="margin: 5px;"
-              >{{ optionItem.title }}</el-radio
-            >
-          </div>
-        </div>
-
-        <!--多选题展示-->
-        <el-checkbox-group
-          v-if="item.qtype == '2'"
-          v-model="item.checkboxValue"
-        >
-          <div
-            class="text item"
-            :key="index"
-            v-for="(optionItem, index) in item.options"
-          >
-            <el-checkbox
-              :label="optionItem.id"
-              :key="optionItem.id"
-              @change="checkReflash"
-              style="margin: 5px;"
-              >{{ optionItem.title }}</el-checkbox
-            >
-          </div>
-        </el-checkbox-group>
-
-        <!--填空题展示-->
-        <div v-if="item.qtype == '3'">
-          <el-input
-            :rows="5"
-            type="textarea"
-            maxlength="140"
-            v-model="item.content"
-            @input="()=>{inputReflash('voiceRecord' + index)}"
-            placeholder="140字最多"
-            resize="none"
-          >
-          </el-input>
-          <VoiceRecord :ref="'voiceRecord' + index" :getVoice="recordVoice(item)" :voicedown="[]" />
-        </div>
-      </el-card>
+        <DesignQuestionCard :detail="detail"
+    :isDisplay = "true"/>
       <el-button
         type="primary"
         style="margin: 5px;"
@@ -119,11 +54,11 @@
   </div>
 </template>
 <script>
-import VoiceRecord from "./VoiceRecord/VoiceRecord.vue";
+import DesignQuestionCard from "./DesignQuestionCard.vue";
 import { answerOpera, getWenjuan, uploadW, upfile } from "./api";
 export default {
   components: {
-    VoiceRecord
+    DesignQuestionCard
   },
   data() {
     return {
@@ -198,18 +133,6 @@ export default {
     });
   },
   methods: {
-    recordVoice(item) {
-      return data => {
-        item.content = data;
-      };
-    },
-    inputReflash(voiceRecordRef) {
-      this.$refs[voiceRecordRef][0].clearAll();
-      this.$forceUpdate();
-    },
-    checkReflash(e) {
-      this.$forceUpdate();
-    },
     dialogClose() {
       this.dialogShow = false;
     },
